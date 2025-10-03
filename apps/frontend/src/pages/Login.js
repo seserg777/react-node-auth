@@ -9,6 +9,7 @@ const Login = () => {
     email: '',
     password: ''
   });
+  const [validationError, setValidationError] = useState('');
   
   const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -37,7 +38,16 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setValidationError('');
     dispatch(clearError());
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setValidationError('Please enter a valid email address');
+      return;
+    }
+
     dispatch(loginUser(formData));
   };
 
@@ -49,9 +59,9 @@ const Login = () => {
             <h3 className="card-title mb-0">Login</h3>
           </div>
           <div className="card-body">
-            {error && (
+            {(error || validationError) && (
               <div className="alert alert-danger" role="alert">
-                {error}
+                {error || validationError}
               </div>
             )}
             

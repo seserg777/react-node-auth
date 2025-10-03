@@ -42,6 +42,13 @@ const Register = () => {
     setValidationError('');
     dispatch(clearError());
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setValidationError('Please enter a valid email address');
+      return;
+    }
+
     // Validate password length
     if (formData.password.length < 6) {
       setValidationError('Password must be at least 6 characters long');
