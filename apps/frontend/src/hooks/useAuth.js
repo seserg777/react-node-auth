@@ -10,7 +10,7 @@ export const useAuth = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/');
+    navigate('/login');
   };
 
   return {
