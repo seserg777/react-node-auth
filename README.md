@@ -67,6 +67,15 @@ database: {
 
 ### 3. Running Applications
 
+#### Quick Start (Development)
+```bash
+# Run all applications in development mode
+npm run dev
+```
+- **Frontend**: http://localhost:3000
+- **Backend**: http://localhost:3001
+- **Health Check**: http://localhost:3001/api/health
+
 #### Running via turborepo (recommended):
 ```bash
 # Run all applications in development mode
@@ -180,6 +189,140 @@ DB_HOST=mysql-5.7.local
 DB_USER=root
 DB_PASSWORD=
 DB_NAME=reactnode
+```
+
+## Production Build and Deployment
+
+### Building the Application
+
+#### Option 1: Build All Applications (Recommended)
+```bash
+# Build both frontend and backend
+npm run build
+```
+
+#### Option 2: Build Applications Separately
+```bash
+# Build frontend only
+cd apps/frontend
+npm run build
+
+# Build backend only (if needed)
+cd apps/backend
+npm run build
+```
+
+### Running Production Build
+
+#### Windows (PowerShell/CMD)
+```powershell
+# Start backend server
+cd apps/backend
+node src/index.js
+
+# In another terminal, serve frontend build
+cd apps/frontend/build
+# Using Python (if installed)
+python -m http.server 8080
+# Or using Node.js serve package
+npx serve -s . -l 8080
+```
+
+#### macOS/Linux (Terminal)
+```bash
+# Start backend server
+cd apps/backend
+node src/index.js
+
+# In another terminal, serve frontend build
+cd apps/frontend/build
+# Using Python
+python3 -m http.server 8080
+# Or using Node.js serve package
+npx serve -s . -l 8080
+```
+
+#### Using PM2 (Process Manager)
+```bash
+# Install PM2 globally
+npm install -g pm2
+
+# Start backend with PM2
+cd apps/backend
+pm2 start src/index.js --name "react-node-auth-backend"
+
+# Start frontend with PM2 (if using serve)
+cd apps/frontend/build
+pm2 start "npx serve -s . -l 8080" --name "react-node-auth-frontend"
+
+# View running processes
+pm2 list
+
+# Stop processes
+pm2 stop react-node-auth-backend
+pm2 stop react-node-auth-frontend
+```
+
+#### Using Docker (Optional)
+```bash
+# Build Docker image for backend
+cd apps/backend
+docker build -t react-node-auth-backend .
+
+# Run backend container
+docker run -p 3001:3001 --env-file .env react-node-auth-backend
+
+# For frontend, use nginx or serve the build folder
+cd apps/frontend/build
+docker run -p 8080:80 -v $(pwd):/usr/share/nginx/html nginx:alpine
+```
+
+### Web Server Configuration
+
+#### Apache
+```apache
+<VirtualHost *:80>
+    ServerName your-domain.com
+    DocumentRoot /path/to/react-node-auth/apps/frontend/build
+    
+    <Directory /path/to/react-node-auth/apps/frontend/build>
+        AllowOverride All
+        Require all granted
+    </Directory>
+    
+    # Proxy API requests to backend
+    ProxyPreserveHost On
+    ProxyPass /api/ http://localhost:3001/api/
+    ProxyPassReverse /api/ http://localhost:3001/api/
+</VirtualHost>
+```
+
+#### Nginx
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+    root /path/to/react-node-auth/apps/frontend/build;
+    index index.html;
+    
+    # Serve React app
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+    
+    # Proxy API requests to backend
+    location /api/ {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
 ```
 
 ## Development
