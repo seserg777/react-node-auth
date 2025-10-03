@@ -18,12 +18,14 @@ const Home = () => {
             {isAuthenticated && user ? (
               <div className="alert alert-success" role="alert">
                 <h4 className="alert-heading">Hello, {user.name || user.email}!</h4>
-                <button 
-                    className="btn btn-outline-light btn-sm d-flex align-items-center"
+                <div className="text-center mt-3">
+                  <button 
+                    className="btn btn-danger btn-sm"
                     onClick={handleLogout}
                   >
                     Logout
                   </button>
+                </div>
               </div>
             ) : (
               <div className="alert alert-info" role="alert">
