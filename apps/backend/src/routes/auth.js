@@ -1,11 +1,8 @@
 // Authentication routes
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const { body, validationResult, sanitizeBody } = require('express-validator');
-const { pool } = require('../database');
 const { authenticateToken } = require('../middleware/auth');
-const config = require('../../config');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 

@@ -4,8 +4,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
-const { initDatabase } = require('./database');
+const { testConnection, syncDatabase } = require('./models');
 const authRoutes = require('./routes/auth');
+const healthController = require('./controllers/healthController');
 const config = require('../config');
 
 const app = express();
@@ -60,9 +61,7 @@ app.use(mongoSanitize());
 app.use('/api/auth', authLimiter, authRoutes);
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ message: 'Server is running', timestamp: new Date().toISOString() });
-});
+app.get('/api/health', healthController.getHealth);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -73,13 +72,17 @@ app.use((err, req, res, next) => {
 // Start server
 const startServer = async () => {
   try {
-    // Initialize database
-    await initDatabase();
+    // Test database connection
+    await testConnection();
+    
+    // Sync database (create tables if they don't exist)
+    await syncDatabase();
     
     // Start listening
     app.listen(config.port, () => {
       console.log(`Server is running on port ${config.port}`);
       console.log(`Health check: http://localhost:${config.port}/api/health`);
+      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);
