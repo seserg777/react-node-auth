@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { updateProfile, deleteProfile, clearError } from '../store/authSlice';
+import { updateProfile, deleteProfile, clearError, setSystemMessage } from '../store/authSlice';
 import { useAuth } from '../hooks/useAuth';
 
 const Profile = () => {
@@ -16,6 +16,14 @@ const Profile = () => {
   const { user, loading, error, isAuthenticated } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated && !loading) {
+      dispatch(setSystemMessage('Please log in to access your profile'));
+      navigate('/login');
+    }
+  }, [isAuthenticated, loading, navigate, dispatch]);
 
   // Initialize form with user data
   useEffect(() => {
@@ -70,13 +78,13 @@ const Profile = () => {
     });
   };
 
-  // Redirect if not authenticated
+  // Show loading or redirect if not authenticated
   if (!isAuthenticated) {
     return (
       <div className="row justify-content-center">
         <div className="col-md-6">
-          <div className="alert alert-warning" role="alert">
-            Please log in to access your profile.
+          <div className="alert alert-info" role="alert">
+            Redirecting to login...
           </div>
         </div>
       </div>

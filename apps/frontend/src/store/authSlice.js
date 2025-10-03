@@ -57,7 +57,8 @@ const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: false,
   loading: false,
-  error: null
+  error: null,
+  systemMessage: null
 };
 
 // Auth slice
@@ -96,6 +97,16 @@ const authSlice = createSlice({
     // Clear error
     clearError: (state) => {
       state.error = null;
+    },
+    
+    // Set system message
+    setSystemMessage: (state, action) => {
+      state.systemMessage = action.payload;
+    },
+    
+    // Clear system message
+    clearSystemMessage: (state) => {
+      state.systemMessage = null;
     }
   },
   extraReducers: (builder) => {
@@ -175,5 +186,5 @@ const authSlice = createSlice({
   }
 });
 
-export const { initializeAuth, logout, clearError } = authSlice.actions;
+export const { initializeAuth, logout, clearError, setSystemMessage, clearSystemMessage } = authSlice.actions;
 export default authSlice.reducer;

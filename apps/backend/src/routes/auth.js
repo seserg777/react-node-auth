@@ -2,7 +2,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, sanitizeBody } = require('express-validator');
 const { pool } = require('../database');
 const { authenticateToken } = require('../middleware/auth');
 const config = require('../../config');
@@ -11,12 +11,13 @@ const router = express.Router();
 
 // Register endpoint
 router.post('/register', [
-  body('email').isEmail().normalizeEmail(),
+  body('email').isEmail().normalizeEmail().escape(),
   body('password')
     .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).*$/)
     .withMessage('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'),
-  body('name').optional().isLength({ min: 2, max: 255 }).withMessage('Name must be between 2 and 255 characters')
+  body('name').optional().isLength({ min: 2, max: 255 }).withMessage('Name must be between 2 and 255 characters').escape(),
+  sanitizeBody('*').escape()
 ], async (req, res) => {
   try {
     // Check validation errors
@@ -68,8 +69,9 @@ router.post('/register', [
 
 // Login endpoint
 router.post('/login', [
-  body('email').isEmail().normalizeEmail(),
-  body('password').notEmpty().withMessage('Password is required')
+  body('email').isEmail().normalizeEmail().escape(),
+  body('password').notEmpty().withMessage('Password is required'),
+  sanitizeBody('*').escape()
 ], async (req, res) => {
   try {
     // Check validation errors
@@ -120,8 +122,9 @@ router.post('/login', [
 // Update user profile endpoint
 router.put('/profile', [
   authenticateToken,
-  body('name').optional().isLength({ min: 2, max: 255 }).withMessage('Name must be between 2 and 255 characters'),
-  body('email').optional().isEmail().normalizeEmail()
+  body('name').optional().isLength({ min: 2, max: 255 }).withMessage('Name must be between 2 and 255 characters').escape(),
+  body('email').optional().isEmail().normalizeEmail().escape(),
+  sanitizeBody('*').escape()
 ], async (req, res) => {
   try {
     // Check validation errors

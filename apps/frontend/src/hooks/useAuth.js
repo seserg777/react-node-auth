@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../store/authSlice';
 
 export const useAuth = () => {
-  const { user, isAuthenticated, loading, error } = useSelector((state) => state.auth);
+  const { user, isAuthenticated, loading, error, systemMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -18,6 +18,7 @@ export const useAuth = () => {
     isAuthenticated,
     loading,
     error,
+    systemMessage,
     handleLogout
   };
 };

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginUser, clearError } from '../store/authSlice';
+import { loginUser, clearError, clearSystemMessage } from '../store/authSlice';
 import { useAuth } from '../hooks/useAuth';
 
 const Login = () => {
@@ -12,7 +12,7 @@ const Login = () => {
   });
   const [validationError, setValidationError] = useState('');
   
-  const { loading, error, isAuthenticated } = useAuth();
+  const { loading, error, isAuthenticated, systemMessage } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,6 +22,17 @@ const Login = () => {
       navigate('/');
     }
   }, [isAuthenticated, navigate]);
+
+  // Clear system message after displaying it
+  useEffect(() => {
+    if (systemMessage) {
+      const timer = setTimeout(() => {
+        dispatch(clearSystemMessage());
+      }, 5000); // Clear after 5 seconds
+      
+      return () => clearTimeout(timer);
+    }
+  }, [systemMessage, dispatch]);
 
   // Clear error when component unmounts
   useEffect(() => {
@@ -60,6 +71,12 @@ const Login = () => {
             <h3 className="card-title mb-0">Login</h3>
           </div>
           <div className="card-body">
+            {systemMessage && (
+              <div className="alert alert-warning" role="alert">
+                {systemMessage}
+              </div>
+            )}
+            
             {(error || validationError) && (
               <div className="alert alert-danger" role="alert">
                 {error || validationError}
