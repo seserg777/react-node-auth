@@ -1,6 +1,7 @@
 // Authentication controller
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 const { User } = require('../models');
 const config = require('../../config');
 
@@ -110,7 +111,7 @@ class AuthController {
         const existingUser = await User.findOne({ 
           where: { 
             email,
-            id: { [require('sequelize').Op.ne]: userId }
+            id: { [Op.ne]: userId }
           }
         });
 
