@@ -16,6 +16,13 @@ dist/
 .env.test.local
 .env.production.local
 
+# Local development server configs
+.osp/
+
+# Local redirect files
+index.html
+.htaccess
+
 # IDE
 .vscode/
 .idea/
