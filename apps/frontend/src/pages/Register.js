@@ -8,7 +8,6 @@ const Register = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    confirmPassword: '',
     name: ''
   });
   const [validationError, setValidationError] = useState('');
@@ -43,12 +42,6 @@ const Register = () => {
     setValidationError('');
     dispatch(clearError());
 
-    // Validate passwords match
-    if (formData.password !== formData.confirmPassword) {
-      setValidationError('Passwords do not match');
-      return;
-    }
-
     // Validate password length
     if (formData.password.length < 6) {
       setValidationError('Password must be at least 6 characters long');
@@ -76,21 +69,7 @@ const Register = () => {
               </div>
             )}
             
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label htmlFor="name" className="form-label">
-                  Name (Optional)
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </div>
-              
+            <form onSubmit={handleSubmit}>             
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">
                   Email Address
@@ -125,20 +104,6 @@ const Register = () => {
                 </div>
               </div>
               
-              <div className="mb-3">
-                <label htmlFor="confirmPassword" className="form-label">
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
               
               <button
                 type="submit"
