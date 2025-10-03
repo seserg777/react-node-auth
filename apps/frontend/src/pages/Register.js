@@ -49,9 +49,20 @@ const Register = () => {
       return;
     }
 
-    // Validate password length
+    // Validate password security requirements
     if (formData.password.length < 6) {
       setValidationError('Password must be at least 6 characters long');
+      return;
+    }
+
+    // Check for basic security requirements
+    const hasUpperCase = /[A-Z]/.test(formData.password);
+    const hasLowerCase = /[a-z]/.test(formData.password);
+    const hasNumbers = /\d/.test(formData.password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(formData.password);
+
+    if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+      setValidationError('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character');
       return;
     }
 
@@ -107,7 +118,13 @@ const Register = () => {
                   minLength="6"
                 />
                 <div className="form-text">
-                  Password must be at least 6 characters long
+                  Password must be at least 6 characters long and contain:
+                  <ul className="mb-0 mt-1">
+                    <li>One uppercase letter (A-Z)</li>
+                    <li>One lowercase letter (a-z)</li>
+                    <li>One number (0-9)</li>
+                    <li>One special character (!@#$%^&*)</li>
+                  </ul>
                 </div>
               </div>
               

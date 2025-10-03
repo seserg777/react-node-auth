@@ -105,14 +105,14 @@ npm start
 ```bash
 curl -X POST http://localhost:3001/api/auth/register \
   -H "Content-Type: application/json" \
-  -d '{"email":"user@example.com","password":"password123","name":"John Doe"}'
+  -d '{"email":"user@example.com","password":"Password123!","name":"John Doe"}'
 ```
 
 **Login:**
 ```bash
 curl -X POST http://localhost:3001/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"user@example.com","password":"password123"}'
+  -d '{"email":"user@example.com","password":"Password123!"}'
 ```
 
 **Update Profile:**
@@ -144,6 +144,7 @@ curl -X GET http://localhost:3001/api/health
 
 ### Security:
 - Passwords hashed with bcryptjs
+- Strong password requirements (uppercase, lowercase, numbers, special characters)
 - JWT tokens with 30 minutes expiration
 - Server-side input validation
 - Protected routes with token verification

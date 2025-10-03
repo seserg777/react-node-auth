@@ -12,7 +12,10 @@ const router = express.Router();
 // Register endpoint
 router.post('/register', [
   body('email').isEmail().normalizeEmail(),
-  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+  body('password')
+    .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).*$/)
+    .withMessage('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'),
   body('name').optional().isLength({ min: 2, max: 255 }).withMessage('Name must be between 2 and 255 characters')
 ], async (req, res) => {
   try {
