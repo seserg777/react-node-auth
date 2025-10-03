@@ -96,6 +96,7 @@ npm start
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/login` - User login
 - `PUT /api/auth/profile` - Update user profile
+- `DELETE /api/auth/profile` - Delete user profile
 - `GET /api/health` - Server health check
 
 ### Request Examples
@@ -122,6 +123,12 @@ curl -X PUT http://localhost:3001/api/auth/profile \
   -d '{"name":"Jane Doe","email":"jane@example.com"}'
 ```
 
+**Delete Profile:**
+```bash
+curl -X DELETE http://localhost:3001/api/auth/profile \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
 ## Features
 
 ### Frontend Pages:
@@ -142,6 +149,7 @@ curl -X PUT http://localhost:3001/api/auth/profile \
 - Error and success notifications
 - Automatic redirect after authentication
 - Profile editing functionality
+- Profile deletion with confirmation modal
 
 ## Database Structure
 

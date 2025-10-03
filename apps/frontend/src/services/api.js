@@ -58,6 +58,12 @@ export const authAPI = {
     return response.data;
   },
 
+  // Delete user profile
+  deleteProfile: async () => {
+    const response = await api.delete('/auth/profile');
+    return response.data;
+  },
+
   // Health check
   health: async () => {
     const response = await api.get('/health');

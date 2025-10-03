@@ -191,4 +191,31 @@ router.put('/profile', [
   }
 });
 
+// Delete user profile endpoint
+router.delete('/profile', [
+  authenticateToken
+], async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    // Delete user from database
+    const [result] = await pool.execute(
+      'DELETE FROM users WHERE id = ?',
+      [userId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({
+      message: 'Profile deleted successfully'
+    });
+
+  } catch (error) {
+    console.error('Profile deletion error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;

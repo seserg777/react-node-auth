@@ -1,7 +1,8 @@
 // Profile page component
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateProfile, clearError } from '../store/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { updateProfile, deleteProfile, clearError } from '../store/authSlice';
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -9,9 +10,11 @@ const Profile = () => {
     email: ''
   });
   const [validationError, setValidationError] = useState('');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   
   const { user, loading, error, isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Initialize form with user data
   useEffect(() => {
@@ -58,6 +61,12 @@ const Profile = () => {
       name: formData.name || undefined,
       email: formData.email
     }));
+  };
+
+  const handleDeleteProfile = () => {
+    dispatch(deleteProfile()).then(() => {
+      navigate('/');
+    });
   };
 
   // Redirect if not authenticated
@@ -130,6 +139,8 @@ const Profile = () => {
               </button>
             </form>
             
+            <hr className="my-4" />
+            
             <div className="mt-4">
               <h5>Current Profile Information:</h5>
               <ul className="list-unstyled">
@@ -138,9 +149,70 @@ const Profile = () => {
                 <li><strong>Name:</strong> {user?.name || 'Not set'}</li>
               </ul>
             </div>
+
+            <div className="text-center">
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => setShowDeleteModal(true)}
+                disabled={loading}
+              >
+                Delete Profile
+              </button>
+              <p className="text-muted mt-2 small">
+                This action cannot be undone. All your data will be permanently deleted.
+              </p>
+            </div>
           </div>
         </div>
       </div>
+      
+      {/* Delete Confirmation Modal */}
+      <div className={`modal fade ${showDeleteModal ? 'show' : ''}`} 
+           style={{ display: showDeleteModal ? 'block' : 'none' }} 
+           tabIndex="-1">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title text-danger">Delete Profile</h5>
+              <button
+                type="button"
+                className="btn-close"
+                onClick={() => setShowDeleteModal(false)}
+              ></button>
+            </div>
+            <div className="modal-body">
+              <p>Are you sure you want to delete your profile?</p>
+              <p className="text-danger">
+                <strong>This action cannot be undone.</strong> All your data will be permanently deleted.
+              </p>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setShowDeleteModal(false)}
+                disabled={loading}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={handleDeleteProfile}
+                disabled={loading}
+              >
+                {loading ? 'Deleting...' : 'Delete Profile'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Modal backdrop */}
+      {showDeleteModal && (
+        <div className="modal-backdrop fade show"></div>
+      )}
     </div>
   );
 };
