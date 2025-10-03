@@ -55,14 +55,14 @@ Create MySQL database:
 CREATE DATABASE reactnode;
 ```
 
-Configure connection in `apps/backend/config.js`:
-```javascript
-database: {
-  host: 'mysql-5.7.local',  // your MySQL host
-  user: 'root',             // your user
-  password: '',             // your password
-  database: 'reactnode'     // database name
-}
+Configure connection in `apps/backend/.env`:
+```env
+PORT=3001
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+DB_HOST=mysql-5.7.local
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=reactnode
 ```
 
 ### 3. Running Applications
