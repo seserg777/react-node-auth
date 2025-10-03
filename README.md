@@ -129,6 +129,11 @@ curl -X DELETE http://localhost:3001/api/auth/profile \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
+**Health Check:**
+```bash
+curl -X GET http://localhost:3001/api/health
+```
+
 ## Features
 
 ### Frontend Pages:
