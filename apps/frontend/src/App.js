@@ -5,6 +5,7 @@ import { Provider, useDispatch } from 'react-redux';
 import { store } from './store/store';
 import { initializeAuth } from './store/authSlice';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -21,9 +22,9 @@ const AppContent = () => {
 
   return (
     <Router>
-      <div className="App">
+      <div className="App d-flex flex-column min-vh-100">
         <Navbar />
-        <main className="container mt-4">
+        <main className="container mt-4 flex-grow-1">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -31,6 +32,7 @@ const AppContent = () => {
             <Route path="/profile" element={<Profile />} />
           </Routes>
         </main>
+        <Footer />
       </div>
     </Router>
   );
