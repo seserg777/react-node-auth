@@ -1,8 +1,9 @@
 // Profile page component
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateProfile, deleteProfile, clearError } from '../store/authSlice';
+import { useAuth } from '../hooks/useAuth';
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +13,7 @@ const Profile = () => {
   const [validationError, setValidationError] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   
-  const { user, loading, error, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, loading, error, isAuthenticated } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

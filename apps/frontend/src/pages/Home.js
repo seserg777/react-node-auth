@@ -1,9 +1,9 @@
 // Home page component
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAuth } from '../hooks/useAuth';
 
 const Home = () => {
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, isAuthenticated, handleLogout } = useAuth();
 
   return (
     <div className="row justify-content-center">
@@ -17,10 +17,13 @@ const Home = () => {
             
             {isAuthenticated && user ? (
               <div className="alert alert-success" role="alert">
-                <h4 className="alert-heading">You are logged in!</h4>
-                <p>Email: {user.email}</p>
-                {user.name && <p>Name: {user.name}</p>}
-                <p>User ID: {user.id}</p>
+                <h4 className="alert-heading">Hello, {user.name || user.email}!</h4>
+                <button 
+                    className="btn btn-outline-light btn-sm d-flex align-items-center"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
               </div>
             ) : (
               <div className="alert alert-info" role="alert">

@@ -1,8 +1,9 @@
 // Register page component
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { registerUser, clearError } from '../store/authSlice';
+import { useAuth } from '../hooks/useAuth';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +13,7 @@ const Register = () => {
   });
   const [validationError, setValidationError] = useState('');
   
-  const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
+  const { loading, error, isAuthenticated } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
