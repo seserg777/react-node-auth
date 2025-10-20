@@ -556,3 +556,26 @@
 2025-10-20T10:27:43.678389Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\backend\\src\\tests\\auth.test.js")}
 2025-10-20T10:27:43.678405Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("backend"), path: AnchoredSystemPathBuf("apps\\backend") }}))
 2025-10-20T10:27:43.692410Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-10-20T10:27:47.572664Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\backend\\src\\tests\\auth.test.js")}
+2025-10-20T10:27:47.572683Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("backend"), path: AnchoredSystemPathBuf("apps\\backend") }}))
+2025-10-20T10:27:48.681074Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\backend\\src\\tests\\auth.test.js")}
+2025-10-20T10:27:48.681090Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("backend"), path: AnchoredSystemPathBuf("apps\\backend") }}))
+2025-10-20T10:27:48.763087Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-10-20T10:27:56.870342Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\backend\\src\\tests\\auth.test.js")}
+2025-10-20T10:27:56.870367Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("backend"), path: AnchoredSystemPathBuf("apps\\backend") }}))
+2025-10-20T10:27:58.272351Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\backend\\src\\tests\\auth.test.js")}
+2025-10-20T10:27:58.272371Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("backend"), path: AnchoredSystemPathBuf("apps\\backend") }}))
+2025-10-20T10:27:58.312620Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-10-20T10:28:17.779907Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\backend\\coverage"), AnchoredSystemPathBuf("apps\\backend")}
+2025-10-20T10:28:17.779928Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("backend"), path: AnchoredSystemPathBuf("apps\\backend") }}))
+2025-10-20T10:28:17.882346Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-10-20T10:28:34.278711Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\frontend\\build")}
+2025-10-20T10:28:34.278742Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("frontend"), path: AnchoredSystemPathBuf("apps\\frontend") }}))
+2025-10-20T10:28:34.348988Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-10-20T10:28:41.669734Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\frontend\\build")}
+2025-10-20T10:28:41.669767Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("frontend"), path: AnchoredSystemPathBuf("apps\\frontend") }}))
+2025-10-20T10:28:41.850396Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-10-20T10:29:18.977870Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\backend\\src\\tests\\auth.test.js")}
+2025-10-20T10:29:18.977896Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("backend"), path: AnchoredSystemPathBuf("apps\\backend") }}))
+2025-10-20T10:31:10.034187Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo")}
+2025-10-20T10:31:10.034207Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))

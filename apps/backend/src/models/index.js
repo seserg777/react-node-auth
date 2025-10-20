@@ -10,7 +10,7 @@ const models = {
 // Sync database (create tables if they don't exist)
 const syncDatabase = async () => {
   try {
-    await sequelize.sync({ alter: true }); // Use alter: true for development
+    await sequelize.sync();
     console.log('Sequelize: Database synchronized successfully');
   } catch (error) {
     console.error('Sequelize: Database synchronization failed:', error);
