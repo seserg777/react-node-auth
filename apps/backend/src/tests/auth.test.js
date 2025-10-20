@@ -28,7 +28,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use(errorHandler);
 
-describe.skip('Authentication API', () => {
+describe('Authentication API', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
