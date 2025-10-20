@@ -18,10 +18,14 @@ react-node-auth/
 
 ### Backend
 - **Node.js** with Express.js
-- **MySQL** database
+- **MySQL** database with **Sequelize ORM**
 - **JWT** tokens (30 minutes lifetime)
 - **bcryptjs** for password hashing
-- **express-validator** for validation
+- **express-validator** for validation and sanitization
+- **Helmet** for security headers
+- **Rate limiting** for DDoS protection
+- **Jest** and **Supertest** for automated testing
+- **Module aliases** for clean imports
 
 ### Frontend
 - **React 18** with hooks
@@ -29,6 +33,7 @@ react-node-auth/
 - **Bootstrap 5** for UI
 - **Axios** for HTTP requests
 - **Redux Toolkit** for state management
+- Custom hooks (`useAuth`) for reusable logic
 
 ## Installation and Setup
 
@@ -152,22 +157,44 @@ curl -X GET http://localhost:3001/api/health
 4. **Profile Page** (`/profile`) - Edit user profile (name and email)
 
 ### Security:
-- Passwords hashed with bcryptjs
-- Strong password requirements (uppercase, lowercase, numbers, special characters)
-- JWT tokens with 30 minutes expiration
-- Server-side input validation
-- Protected routes with token verification
+- **Password Security**: Hashed with bcryptjs, strong password requirements (uppercase, lowercase, numbers, special characters, min 6 chars)
+- **JWT Authentication**: Tokens with 30 minutes expiration
+- **Input Validation & Sanitization**: Server-side validation with express-validator, XSS protection
+- **Rate Limiting**: Scoped rate limiters (100 req/15min general, 5 req/15min for auth endpoints)
+- **Security Headers**: Helmet middleware with Content Security Policy (CSP)
+- **NoSQL Injection Protection**: express-mongo-sanitize
+- **Centralized Error Handling**: Custom error handler middleware
+- **Protected Routes**: Token verification middleware
 
 ### UI/UX:
 - Responsive design with Bootstrap 5
 - Dynamic navigation bar with user name display
-- Error and success notifications
+- System messages stored in Redux state
 - Automatic redirect after authentication
+- Email validation (client-side and server-side)
 - Profile editing functionality
 - Profile deletion with confirmation modal
+- Custom favicon and footer
+- Protected routes with login redirect
 
 ## Database Structure
 
+The application uses **Sequelize ORM** for database management. Tables are automatically created and synchronized on application startup.
+
+### User Model
+```javascript
+// Sequelize model definition
+{
+  id: INTEGER (Primary Key, Auto Increment),
+  email: STRING(255) (Unique, Not Null, Email Validation),
+  password: STRING(255) (Not Null, Hashed with bcryptjs),
+  name: STRING(255) (Optional, Length: 2-255),
+  created_at: TIMESTAMP (Auto-generated),
+  updated_at: TIMESTAMP (Auto-generated)
+}
+```
+
+### Manual SQL (if needed)
 ```sql
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -342,6 +369,120 @@ cd apps/backend && npm run dev
 cd apps/frontend && npm start
 ```
 
+## Testing
+
+### Backend Testing with Jest
+
+The project includes comprehensive test coverage for the backend:
+
+```bash
+# Run all tests
+cd apps/backend
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Generate coverage report
+npm run test:coverage
+```
+
+### Test Suites:
+- **Authentication API Tests** (`auth.test.js`): Registration, login, profile management
+- **Health Check Tests** (`health.test.js`): Server status endpoint
+- **Middleware Tests** (`middleware.test.js`): Error handling, async wrapper
+- **Simple Tests** (`simple.test.js`): Basic functionality
+
+### Git Hooks (Husky)
+
+The project uses **Husky** for automated quality checks:
+
+#### Pre-commit Hook
+- Runs all backend tests before allowing commit
+- Blocks commit if any tests fail
+- Ensures code quality
+
+#### Commit Message Hook
+- Validates commit message format
+- Requires non-empty message with minimum length
+
+```bash
+# Pre-commit hook automatically runs:
+cd apps/backend && npm test
+
+# If tests fail, commit is blocked
+# Fix failing tests before committing
+```
+
+### Code Quality Tools:
+- **Jest**: Unit and integration testing
+- **Supertest**: HTTP endpoint testing
+- **Husky**: Git hooks automation
+- **ESLint**: Code linting (optional)
+
+## Architecture
+
+### Backend Structure:
+```
+apps/backend/src/
+├── config/           # Database and app configuration
+├── controllers/      # Business logic (AuthController, HealthController)
+├── middleware/       # Auth, error handling
+├── models/           # Sequelize models (User)
+├── routes/           # API routes
+├── tests/            # Jest test suites
+├── utils/            # Helpers (asyncHandler)
+└── index.js          # Main server file
+```
+
+### Module Aliases:
+The backend uses path aliases for clean imports:
+- `@config` → `apps/backend/src/config`
+- `@controllers` → `apps/backend/src/controllers`
+- `@routes` → `apps/backend/src/routes`
+- `@models` → `apps/backend/src/models`
+- `@middleware` → `apps/backend/src/middleware`
+- `@utils` → `apps/backend/src/utils`
+
+Example:
+```javascript
+// Instead of: require('../../../config/database')
+const { sequelize } = require('@config/database');
+```
+
+## Troubleshooting
+
+### Common Issues:
+
+1. **"Too many keys specified" error**
+   - Sequelize duplicate indexes issue
+   - Solution: Check `SHOW INDEX FROM users;` and remove duplicates
+
+2. **Port already in use (EADDRINUSE)**
+   - Kill process using the port:
+     ```bash
+     # Windows
+     netstat -ano | findstr :3001
+     taskkill /PID <PID> /F
+     
+     # macOS/Linux
+     lsof -i :3001
+     kill -9 <PID>
+     ```
+
+3. **Module not found errors**
+   - Ensure `module-alias` is registered in `index.js`
+   - Check `_moduleAliases` in `package.json`
+
+4. **Tests failing**
+   - Check database connection
+   - Ensure mocks are properly configured
+   - Run `npm install` in `apps/backend`
+
 ## License
 
 MIT
+
+## Credits
+
+Created by **Serhii Soloviov**
