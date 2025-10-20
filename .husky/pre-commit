@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run lint-staged for staged files
+npx lint-staged
+
+# Run tests for backend
+cd apps/backend && npm test
+

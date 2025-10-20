@@ -5,9 +5,13 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "test": "cd apps/backend && npm test",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.4",
     "turbo": "^1.10.12"
   },
   "packageManager": "npm@9.6.7",

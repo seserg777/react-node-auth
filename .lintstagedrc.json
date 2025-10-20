@@ -1,0 +1,10 @@
+{
+  "apps/backend/src/**/*.js": [
+    "eslint --fix",
+    "npm run test --prefix apps/backend -- --bail --findRelatedTests"
+  ],
+  "apps/frontend/src/**/*.{js,jsx}": [
+    "eslint --fix"
+  ]
+}
+
