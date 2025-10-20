@@ -1,9 +1,9 @@
 // Authentication tests
 const request = require('supertest');
 const express = require('express');
-const authRoutes = require('@routes/auth');
-const { errorHandler } = require('@middleware/errorHandler');
-// Mock the database models
+const bcrypt = require('bcryptjs');
+
+// Mock the database models BEFORE any other imports
 jest.mock('../models', () => ({
   User: {
     findOne: jest.fn(),
@@ -14,13 +14,9 @@ jest.mock('../models', () => ({
   }
 }));
 
-// Mock bcrypt
-jest.mock('bcryptjs', () => ({
-  hashSync: jest.fn(() => 'hashedpassword'),
-  compareSync: jest.fn(() => true)
-}));
-
 const { User } = require('../models');
+const authRoutes = require('@routes/auth');
+const { errorHandler } = require('@middleware/errorHandler');
 
 // Create test app
 const app = express();
@@ -43,11 +39,17 @@ describe('Authentication API', () => {
 
       // Mock database responses
       User.findOne.mockResolvedValue(null); // No existing user
-      User.create.mockResolvedValue({
-        id: 1,
-        email: userData.email,
-        name: userData.name,
-        password: 'hashedpassword'
+      
+      // Mock User.create to return a user object with hashed password
+      User.create.mockImplementation(async (data) => {
+        return {
+          id: 1,
+          email: data.email,
+          name: data.name,
+          password: data.password, // Already hashed by controller
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
       });
 
       const response = await request(app)
@@ -59,6 +61,8 @@ describe('Authentication API', () => {
       expect(response.body).toHaveProperty('token');
       expect(response.body).toHaveProperty('user');
       expect(response.body.user.email).toBe(userData.email);
+      expect(User.findOne).toHaveBeenCalledWith({ where: { email: userData.email } });
+      expect(User.create).toHaveBeenCalled();
     });
 
     it('should reject registration with invalid email', async () => {
@@ -121,12 +125,15 @@ describe('Authentication API', () => {
         password: 'Test123!'
       };
 
+      // Hash the password to simulate real database entry
+      const hashedPassword = bcrypt.hashSync(loginData.password, 10);
+
       // Mock database response for login
       User.findOne.mockResolvedValue({
         id: 1,
         email: loginData.email,
         name: 'Login Test User',
-        password: '$2a$10$hashedpassword'
+        password: hashedPassword
       });
 
       const response = await request(app)
@@ -137,6 +144,7 @@ describe('Authentication API', () => {
       expect(response.body).toHaveProperty('message', 'Login successful');
       expect(response.body).toHaveProperty('token');
       expect(response.body).toHaveProperty('user');
+      expect(User.findOne).toHaveBeenCalledWith({ where: { email: loginData.email } });
     });
 
     it('should reject login with invalid credentials', async () => {
