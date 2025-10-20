@@ -1,9 +1,9 @@
 // Authentication routes
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-const { authenticateToken } = require('@middleware/auth');
-const authController = require('@controllers/authController');
-const { asyncHandler } = require('@utils/asyncHandler');
+const { authenticateToken } = require('../middleware/auth');
+const authController = require('../controllers/authController');
+const { asyncHandler } = require('../utils/asyncHandler');
 
 const router = express.Router();
 

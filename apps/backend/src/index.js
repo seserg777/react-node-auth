@@ -4,11 +4,11 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
-const { testConnection } = require('@config/database');
-const { syncDatabase } = require('@models');
-const authRoutes = require('@routes/auth');
-const healthController = require('@controllers/healthController');
-const { errorHandler } = require('@middleware/errorHandler');
+const { testConnection } = require('./config/database');
+const { syncDatabase } = require('./models');
+const authRoutes = require('./routes/auth');
+const healthController = require('./controllers/healthController');
+const { errorHandler } = require('./middleware/errorHandler');
 const config = require('../config');
 
 const app = express();
