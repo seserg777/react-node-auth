@@ -530,3 +530,15 @@
 2025-10-20T10:24:05.472978Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("backend"), path: AnchoredSystemPathBuf("apps\\backend") }}))
 2025-10-20T10:24:12.672103Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".husky\\pre-commit")}
 2025-10-20T10:24:12.672121Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-10-20T10:24:18.570147Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".husky\\commit-msg")}
+2025-10-20T10:24:18.570172Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-10-20T10:24:20.481087Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".husky\\pre-commit")}
+2025-10-20T10:24:20.481100Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-10-20T10:24:35.579045Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".husky\\commit-msg")}
+2025-10-20T10:24:35.579060Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-10-20T10:24:37.071745Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("TEST_HOOKS.md")}
+2025-10-20T10:24:37.071760Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-10-20T10:24:37.181090Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("TEST_HOOKS.md")}
+2025-10-20T10:24:37.181106Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-10-20T10:24:38.970754Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("")}
+2025-10-20T10:24:38.970781Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({}))
