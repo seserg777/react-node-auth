@@ -7,6 +7,9 @@
     "dev": "nodemon -r module-alias/register src/index.js",
     "build": "echo 'Build complete'",
     "start": "node -r module-alias/register src/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "lint": "eslint src/",
     "clean": "rm -rf dist"
   },
@@ -36,5 +39,25 @@
     "@models": "apps/backend/src/models",
     "@middleware": "apps/backend/src/middleware",
     "@utils": "apps/backend/src/utils"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": ["<rootDir>/src/tests/setup.js"],
+    "testMatch": ["**/__tests__/**/*.js", "**/?(*.)+(spec|test).js"],
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/tests/**",
+      "!src/index.js"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": ["text", "lcov", "html"],
+    "moduleNameMapper": {
+      "^@config/(.*)$": "<rootDir>/src/config/$1",
+      "^@controllers/(.*)$": "<rootDir>/src/controllers/$1",
+      "^@routes/(.*)$": "<rootDir>/src/routes/$1",
+      "^@models/(.*)$": "<rootDir>/src/models/$1",
+      "^@middleware/(.*)$": "<rootDir>/src/middleware/$1",
+      "^@utils/(.*)$": "<rootDir>/src/utils/$1"
+    }
   }
 }
