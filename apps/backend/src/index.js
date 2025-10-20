@@ -4,10 +4,11 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
-const { testConnection } = require('./config/database');
-const { syncDatabase } = require('./models');
-const authRoutes = require('./routes/auth');
-const healthController = require('./controllers/healthController');
+const { testConnection } = require('@config/database');
+const { syncDatabase } = require('@models');
+const authRoutes = require('@routes/auth');
+const healthController = require('@controllers/healthController');
+const { errorHandler } = require('@middleware/errorHandler');
 const config = require('../config');
 
 const app = express();
@@ -31,18 +32,16 @@ app.use(helmet({
 }));
 
 // Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+// General API limiter (exclude static assets by applying only to /api)
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 600, // higher bucket for general API
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
 });
 
-// Apply rate limiting to all requests
-app.use(limiter);
-
-// Stricter rate limiting for auth endpoints
+// Stricter rate limiting for auth endpoints (credential stuffing protection)
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5, // limit each IP to 5 requests per windowMs for auth
@@ -59,16 +58,14 @@ app.use(express.json({ limit: '10mb' }));
 app.use(mongoSanitize());
 
 // Routes
+app.use('/api', apiLimiter);
 app.use('/api/auth', authLimiter, authRoutes);
 
 // Health check endpoint
 app.get('/api/health', healthController.getHealth);
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!' });
-});
+// Centralized error handling
+app.use(errorHandler);
 
 // Start server
 const startServer = async () => {
