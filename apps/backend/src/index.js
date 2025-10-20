@@ -1,14 +1,23 @@
 // Main server file
+const path = require('path');
+require('module-alias').addAliases({
+  '@config': path.resolve(__dirname, 'config'),
+  '@controllers': path.resolve(__dirname, 'controllers'),
+  '@routes': path.resolve(__dirname, 'routes'),
+  '@models': path.resolve(__dirname, 'models'),
+  '@middleware': path.resolve(__dirname, 'middleware'),
+  '@utils': path.resolve(__dirname, 'utils')
+});
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
-const { testConnection } = require('./config/database');
-const { syncDatabase } = require('./models');
-const authRoutes = require('./routes/auth');
-const healthController = require('./controllers/healthController');
-const { errorHandler } = require('./middleware/errorHandler');
+const { testConnection } = require('@config/database');
+const { syncDatabase } = require('@models');
+const authRoutes = require('@routes/auth');
+const healthController = require('@controllers/healthController');
+const { errorHandler } = require('@middleware/errorHandler');
 const config = require('../config');
 
 const app = express();

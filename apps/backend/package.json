@@ -30,11 +30,11 @@
     "nodemon": "^3.0.1"
   },
   "_moduleAliases": {
-    "@config": "./src/config",
-    "@controllers": "./src/controllers",
-    "@routes": "./src/routes",
-    "@models": "./src/models",
-    "@middleware": "./src/middleware",
-    "@utils": "./src/utils"
+    "@config": "apps/backend/src/config",
+    "@controllers": "apps/backend/src/controllers",
+    "@routes": "apps/backend/src/routes",
+    "@models": "apps/backend/src/models",
+    "@middleware": "apps/backend/src/middleware",
+    "@utils": "apps/backend/src/utils"
   }
 }
