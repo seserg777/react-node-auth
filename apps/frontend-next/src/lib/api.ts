@@ -73,5 +73,34 @@ export const authAPI = {
   }
 };
 
+// Product API methods
+export const productAPI = {
+  // Get all products with pagination and filters
+  getProducts: async (params?: {
+    page?: number;
+    limit?: number;
+    category?: string;
+    inStock?: boolean;
+    minPrice?: number;
+    maxPrice?: number;
+    search?: string;
+  }) => {
+    const response = await api.get('/products', { params });
+    return response.data;
+  },
+
+  // Get single product by ID
+  getProductById: async (id: number) => {
+    const response = await api.get(`/products/${id}`);
+    return response.data;
+  },
+
+  // Get product categories
+  getCategories: async () => {
+    const response = await api.get('/products/categories');
+    return response.data;
+  }
+};
+
 export default api;
 

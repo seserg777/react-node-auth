@@ -181,6 +181,13 @@ npm run dev
 - `POST /api/auth/login` - User login
 - `PUT /api/auth/profile` - Update user profile
 - `DELETE /api/auth/profile` - Delete user profile
+
+### Products
+- `GET /api/products` - Get all products (with pagination and filters)
+- `GET /api/products/:id` - Get single product by ID
+- `GET /api/products/categories` - Get all product categories
+
+### Health
 - `GET /api/health` - Server health check
 
 ### Request Examples
@@ -216,6 +223,34 @@ curl -X DELETE http://localhost:3001/api/auth/profile \
 **Health Check:**
 ```bash
 curl -X GET http://localhost:3001/api/health
+```
+
+**Get Products:**
+```bash
+# Get all products (first page)
+curl -X GET http://localhost:3001/api/products
+
+# Get products with pagination
+curl -X GET "http://localhost:3001/api/products?page=2&limit=12"
+
+# Filter by category
+curl -X GET "http://localhost:3001/api/products?category=Electronics"
+
+# Search products
+curl -X GET "http://localhost:3001/api/products?search=laptop"
+
+# Filter by price range
+curl -X GET "http://localhost:3001/api/products?minPrice=50&maxPrice=500"
+```
+
+**Get Product by ID:**
+```bash
+curl -X GET http://localhost:3001/api/products/1
+```
+
+**Get Categories:**
+```bash
+curl -X GET http://localhost:3001/api/products/categories
 ```
 
 ## Features

@@ -1,10 +1,12 @@
 // Models index file
 const { sequelize } = require('../config/database');
 const User = require('./User');
+const Product = require('./Product');
 
 // Initialize all models
 const models = {
-  User
+  User,
+  Product
 };
 
 // Sync database (create tables if they don't exist)
@@ -22,5 +24,6 @@ module.exports = {
   sequelize,
   models,
   syncDatabase,
-  User
+  User,
+  Product
 };

@@ -16,6 +16,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const { testConnection } = require('@config/database');
 const { syncDatabase } = require('@models');
 const authRoutes = require('@routes/auth');
+const productRoutes = require('@routes/products');
 const healthController = require('@controllers/healthController');
 const { errorHandler } = require('@middleware/errorHandler');
 const config = require('../config');
@@ -69,6 +70,7 @@ app.use(mongoSanitize());
 // Routes
 app.use('/api', apiLimiter);
 app.use('/api/auth', authLimiter, authRoutes);
+app.use('/api/products', productRoutes);
 
 // Health check endpoint
 app.get('/api/health', healthController.getHealth);
@@ -84,6 +86,10 @@ const startServer = async () => {
     
     // Sync database (create tables if they don't exist)
     await syncDatabase();
+    
+    // Seed products if needed
+    const { generateProducts } = require('./seeders/productSeeder');
+    await generateProducts();
     
     // Start listening
     app.listen(config.port, () => {

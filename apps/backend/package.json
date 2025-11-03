@@ -10,6 +10,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "seed:products": "node src/seeders/productSeeder.js",
     "lint": "eslint src/",
     "clean": "rm -rf dist"
   },
