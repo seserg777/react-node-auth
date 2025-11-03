@@ -1,6 +1,6 @@
 # React Node Auth
 
-Full-featured authentication application using React, Node.js, MySQL and JWT tokens.
+Full-featured authentication application with **Next.js 14+**, React, Node.js, MySQL, and JWT tokens. Built with TypeScript, Turborepo, and modern best practices.
 
 ## Project Structure
 
@@ -58,11 +58,13 @@ The project includes **two frontend implementations** that you can run independe
 - **Next.js 14+** with App Router
 - **TypeScript** for type safety
 - **Server Components** and Client Components
-- **Bootstrap 5** for consistent UI
+- **Bootstrap 5** for responsive UI
 - **Axios** for HTTP requests
 - **Redux Toolkit** with SSR support
+- **BrowserSync** for live reloading (optional)
 - Custom hooks with Next.js navigation
 - Path aliases (`@/*`) for clean imports
+- Reusable component architecture (ProductCard example)
 
 ## Installation and Setup
 
@@ -127,13 +129,13 @@ npm run dev
 
 | Command | Description |
 |---------|-------------|
+| `npm run dev:next` | ✅ Run Backend + Next.js Frontend (Recommended) |
 | `npm run dev:react` | Run Backend + React Frontend |
-| `npm run dev:next` | Run Backend + Next.js Frontend (Recommended) |
 | `npm run dev` | Run Backend + Both Frontends |
-| `npm run build:react` | Build Backend + React Frontend |
-| `npm run build:next` | Build Backend + Next.js Frontend |
+| `npm run build:next` | Build Backend + Next.js for production |
+| `npm run build:react` | Build Backend + React for production |
 | `npm run build` | Build All Applications |
-| `npm test` | Run Backend Tests |
+| `npm test` | Run Backend Tests (Jest + Supertest) |
 
 #### Option 1: Using Turborepo (Recommended)
 
@@ -219,10 +221,11 @@ curl -X GET http://localhost:3001/api/health
 ## Features
 
 ### Frontend Pages (React & Next.js):
-1. **Home Page** (`/`) - Hello World with authentication status information
+1. **Home Page** (`/`) - Welcome page with authentication status
 2. **Login Page** (`/login`) - Login form with email validation
-3. **Register Page** (`/register`) - Registration form with strong password requirements
-4. **Profile Page** (`/profile`) - Edit user profile (name and email), delete account
+3. **Register Page** (`/register`) - Registration with strong password requirements
+4. **Profile Page** (`/profile`) - Edit user profile (name, email), delete account
+5. **Product List** (`/productlist`) - Product catalog with grid layout (Next.js demo)
 
 ### Security:
 - **Password Security**: Hashed with bcryptjs, strong password requirements (uppercase, lowercase, numbers, special characters, min 6 chars)
@@ -547,20 +550,37 @@ apps/backend/src/
 ### Frontend Structure (Next.js):
 ```
 apps/frontend-next/src/
-├── app/              # App Router pages
-│   ├── layout.tsx    # Root layout
-│   ├── page.tsx      # Home page
-│   ├── login/        # Login page
-│   ├── register/     # Register page
-│   └── profile/      # Profile page
-├── components/       # Reusable components (Navbar, Footer)
-├── hooks/            # Custom hooks (useAuth)
-├── lib/              # Redux store and features
-│   ├── store.ts      # Redux store configuration
-│   ├── api.ts        # API client with axios
-│   └── features/     # Redux slices (authSlice)
-└── types/            # TypeScript type definitions
+├── app/                    # App Router pages (file-based routing)
+│   ├── layout.tsx          # Root layout
+│   ├── page.tsx            # Home page (/)
+│   ├── login/              # Login route (/login)
+│   │   └── page.tsx
+│   ├── register/           # Register route (/register)
+│   │   └── page.tsx
+│   ├── profile/            # Profile route (/profile)
+│   │   └── page.tsx
+│   └── productlist/        # Product list route (/productlist)
+│       └── page.tsx
+├── components/             # Reusable components
+│   ├── Navbar.tsx          # Navigation bar
+│   ├── Footer.tsx          # Footer
+│   └── ProductCard.tsx     # Product card component (example)
+├── hooks/                  # Custom hooks
+│   └── useAuth.ts          # Authentication hook
+├── lib/                    # Redux store and API
+│   ├── store.ts            # Redux store configuration
+│   ├── api.ts              # API client with axios interceptors
+│   └── features/
+│       └── authSlice.ts    # Auth Redux slice with SSR support
+└── types/                  # TypeScript type definitions
 ```
+
+**Key Architecture Principles:**
+- 🎯 **File-based routing** - Each folder in `app/` is a route
+- 🧩 **Component separation** - Reusable components in `components/`
+- 🪝 **Custom hooks** - Business logic in hooks for reusability
+- 🔄 **Redux for state** - Global state management with SSR support
+- 📘 **TypeScript** - Full type safety across the application
 
 ### Module Aliases:
 
@@ -648,6 +668,48 @@ If you see an SSL error when opening `localhost:3000`:
    - Ensure mocks are properly configured
    - Run `npm install` in `apps/backend`
 
+## Tech Stack Summary
+
+### Backend
+- Node.js + Express.js
+- MySQL + Sequelize ORM
+- JWT Authentication
+- Jest + Supertest for testing
+- Rate limiting & Security headers
+
+### Frontend
+- **Next.js 14+** with App Router ✨
+- TypeScript for type safety
+- Redux Toolkit (SSR compatible)
+- Bootstrap 5 for UI
+- BrowserSync for live reload
+
+### DevOps
+- Turborepo for monorepo management
+- Husky for Git hooks
+- ESLint for code quality
+- Module aliases for clean imports
+
+## What's Included
+
+✅ Complete authentication system (register, login, profile management)  
+✅ Two frontend implementations (React & Next.js)  
+✅ RESTful API with validation  
+✅ Database integration with Sequelize ORM  
+✅ Comprehensive testing suite  
+✅ Production-ready security measures  
+✅ BrowserSync integration  
+✅ Component-based architecture example  
+✅ TypeScript support  
+✅ Git hooks for quality control  
+
+## Documentation
+
+- 📖 [Quick Start Guide](./QUICK_START.md) - Fast setup instructions
+- 🚀 [Migration Guide](./MIGRATION_TO_NEXTJS.md) - React to Next.js migration
+- 🔧 [Deployment Guide](./DEPLOYMENT.md) - Production deployment
+- ⚙️ [Environment Setup](./ENV_SETUP.md) - Environment configuration
+
 ## License
 
 MIT
@@ -655,3 +717,7 @@ MIT
 ## Credits
 
 Created by **Serhii Soloviov**
+
+---
+
+⭐ If you find this project helpful, please consider giving it a star on GitHub!
