@@ -10,8 +10,8 @@ import cartReducer, {
 describe('cartSlice', () => {
   const initialState = {
     items: [],
-    totalQuantity: 0,
-    totalAmount: 0,
+    totalItems: 0,
+    totalPrice: 0,
   };
 
   const mockProduct = {
@@ -31,23 +31,23 @@ describe('cartSlice', () => {
 
       expect(state.items).toHaveLength(1);
       expect(state.items[0]).toEqual({ ...mockProduct, quantity: 1 });
-      expect(state.totalQuantity).toBe(1);
-      expect(state.totalAmount).toBe(50.0);
+      expect(state.totalItems).toBe(1);
+      expect(state.totalPrice).toBe(50.0);
     });
 
     it('should increment quantity if product already exists', () => {
       const stateWithProduct = {
         items: [{ ...mockProduct, quantity: 1 }],
-        totalQuantity: 1,
-        totalAmount: 50.0,
+        totalItems: 1,
+        totalPrice: 50.0,
       };
 
       const state = cartReducer(stateWithProduct, addToCart(mockProduct));
 
       expect(state.items).toHaveLength(1);
       expect(state.items[0].quantity).toBe(2);
-      expect(state.totalQuantity).toBe(2);
-      expect(state.totalAmount).toBe(100.0);
+      expect(state.totalItems).toBe(2);
+      expect(state.totalPrice).toBe(100.0);
     });
 
     it('should handle multiple different products', () => {
@@ -57,8 +57,8 @@ describe('cartSlice', () => {
       state = cartReducer(state, addToCart(product2));
 
       expect(state.items).toHaveLength(2);
-      expect(state.totalQuantity).toBe(2);
-      expect(state.totalAmount).toBe(80.0);
+      expect(state.totalItems).toBe(2);
+      expect(state.totalPrice).toBe(80.0);
     });
   });
 
@@ -66,31 +66,31 @@ describe('cartSlice', () => {
     it('should remove a product from the cart', () => {
       const stateWithProduct = {
         items: [{ ...mockProduct, quantity: 1 }],
-        totalQuantity: 1,
-        totalAmount: 50.0,
+        totalItems: 1,
+        totalPrice: 50.0,
       };
 
       const state = cartReducer(stateWithProduct, removeFromCart(1));
 
       expect(state.items).toHaveLength(0);
-      expect(state.totalQuantity).toBe(0);
-      expect(state.totalAmount).toBe(0);
+      expect(state.totalItems).toBe(0);
+      expect(state.totalPrice).toBe(0);
     });
 
     it('should not affect other products', () => {
       const product2 = { id: 2, name: 'Product 2', price: 30.0, quantity: 1 };
       const stateWithProducts = {
         items: [{ ...mockProduct, quantity: 1 }, product2],
-        totalQuantity: 2,
-        totalAmount: 80.0,
+        totalItems: 2,
+        totalPrice: 80.0,
       };
 
       const state = cartReducer(stateWithProducts, removeFromCart(1));
 
       expect(state.items).toHaveLength(1);
       expect(state.items[0].id).toBe(2);
-      expect(state.totalQuantity).toBe(1);
-      expect(state.totalAmount).toBe(30.0);
+      expect(state.totalItems).toBe(1);
+      expect(state.totalPrice).toBe(30.0);
     });
   });
 
@@ -98,8 +98,8 @@ describe('cartSlice', () => {
     it('should update product quantity', () => {
       const stateWithProduct = {
         items: [{ ...mockProduct, quantity: 1 }],
-        totalQuantity: 1,
-        totalAmount: 50.0,
+        totalItems: 1,
+        totalPrice: 50.0,
       };
 
       const state = cartReducer(
@@ -108,15 +108,15 @@ describe('cartSlice', () => {
       );
 
       expect(state.items[0].quantity).toBe(3);
-      expect(state.totalQuantity).toBe(3);
-      expect(state.totalAmount).toBe(150.0);
+      expect(state.totalItems).toBe(3);
+      expect(state.totalPrice).toBe(150.0);
     });
 
     it('should remove product if quantity is 0 or less', () => {
       const stateWithProduct = {
         items: [{ ...mockProduct, quantity: 1 }],
-        totalQuantity: 1,
-        totalAmount: 50.0,
+        totalItems: 1,
+        totalPrice: 50.0,
       };
 
       const state = cartReducer(
@@ -125,8 +125,8 @@ describe('cartSlice', () => {
       );
 
       expect(state.items).toHaveLength(0);
-      expect(state.totalQuantity).toBe(0);
-      expect(state.totalAmount).toBe(0);
+      expect(state.totalItems).toBe(0);
+      expect(state.totalPrice).toBe(0);
     });
   });
 
@@ -137,15 +137,15 @@ describe('cartSlice', () => {
           { ...mockProduct, quantity: 2 },
           { id: 2, name: 'Product 2', price: 30.0, quantity: 1 },
         ],
-        totalQuantity: 3,
-        totalAmount: 130.0,
+        totalItems: 3,
+        totalPrice: 130.0,
       };
 
       const state = cartReducer(stateWithProducts, clearCart());
 
       expect(state.items).toHaveLength(0);
-      expect(state.totalQuantity).toBe(0);
-      expect(state.totalAmount).toBe(0);
+      expect(state.totalItems).toBe(0);
+      expect(state.totalPrice).toBe(0);
     });
   });
 
@@ -155,8 +155,8 @@ describe('cartSlice', () => {
       
       // Should remain empty if no localStorage data
       expect(state.items).toHaveLength(0);
-      expect(state.totalQuantity).toBe(0);
-      expect(state.totalAmount).toBe(0);
+      expect(state.totalItems).toBe(0);
+      expect(state.totalPrice).toBe(0);
     });
   });
 
@@ -173,8 +173,8 @@ describe('cartSlice', () => {
       state = cartReducer(state, addToCart({ id: 2, name: 'Product 2', price: 30 }));
       state = cartReducer(state, addToCart({ id: 2, name: 'Product 2', price: 30 }));
 
-      expect(state.totalQuantity).toBe(5);
-      expect(state.totalAmount).toBe(190);
+      expect(state.totalItems).toBe(5);
+      expect(state.totalPrice).toBe(190);
     });
   });
 });

@@ -104,7 +104,7 @@ describe('ProductCard Component', () => {
     expect(state.cart.items).toHaveLength(1);
     expect(state.cart.items[0].id).toBe(1);
     expect(state.cart.items[0].name).toBe('Test Product');
-    expect(state.cart.totalQuantity).toBe(1);
+    expect(state.cart.totalItems).toBe(1);
   });
 
   it('renders product image with correct src', () => {
