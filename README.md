@@ -225,7 +225,17 @@ curl -X GET http://localhost:3001/api/health
 2. **Login Page** (`/login`) - Login form with email validation
 3. **Register Page** (`/register`) - Registration with strong password requirements
 4. **Profile Page** (`/profile`) - Edit user profile (name, email), delete account
-5. **Product List** (`/productlist`) - Product catalog with grid layout (Next.js demo)
+5. **Product List** (`/productlist`) - Product catalog with responsive grid layout
+
+### E-commerce Features (Next.js):
+- 🛒 **Shopping Cart** - Mini cart with icon and item counter in navbar
+- 📦 **Product Catalog** - Grid layout with ProductCard components
+- ➕ **Add to Cart** - One-click add products to cart
+- 🔢 **Quantity Management** - Increase/decrease quantities in cart modal
+- 🗑️ **Remove Items** - Delete individual items or clear entire cart
+- 💾 **Cart Persistence** - Saved in localStorage, persists across sessions
+- 💰 **Price Calculations** - Automatic totals and subtotals
+- 🎨 **Responsive Design** - Works on all screen sizes
 
 ### Security:
 - **Password Security**: Hashed with bcryptjs, strong password requirements (uppercase, lowercase, numbers, special characters, min 6 chars)
@@ -562,16 +572,18 @@ apps/frontend-next/src/
 │   └── productlist/        # Product list route (/productlist)
 │       └── page.tsx
 ├── components/             # Reusable components
-│   ├── Navbar.tsx          # Navigation bar
+│   ├── Navbar.tsx          # Navigation bar with MiniCart
 │   ├── Footer.tsx          # Footer
-│   └── ProductCard.tsx     # Product card component (example)
+│   ├── ProductCard.tsx     # Product card component
+│   └── MiniCart.tsx        # Shopping cart modal
 ├── hooks/                  # Custom hooks
 │   └── useAuth.ts          # Authentication hook
 ├── lib/                    # Redux store and API
 │   ├── store.ts            # Redux store configuration
 │   ├── api.ts              # API client with axios interceptors
 │   └── features/
-│       └── authSlice.ts    # Auth Redux slice with SSR support
+│       ├── authSlice.ts    # Auth Redux slice with SSR support
+│       └── cartSlice.ts    # Shopping cart Redux slice
 └── types/                  # TypeScript type definitions
 ```
 
@@ -694,14 +706,17 @@ If you see an SSL error when opening `localhost:3000`:
 
 ✅ Complete authentication system (register, login, profile management)  
 ✅ Two frontend implementations (React & Next.js)  
+✅ Shopping cart functionality with Redux (Next.js)  
+✅ Product catalog with reusable components  
 ✅ RESTful API with validation  
 ✅ Database integration with Sequelize ORM  
-✅ Comprehensive testing suite  
+✅ Comprehensive testing suite (18 tests)  
 ✅ Production-ready security measures  
 ✅ BrowserSync integration  
-✅ Component-based architecture example  
+✅ Component-based architecture  
 ✅ TypeScript support  
 ✅ Git hooks for quality control  
+✅ LocalStorage persistence for cart and auth  
 
 ## Documentation
 
