@@ -8,12 +8,15 @@ import ProductCard from '@/components/ProductCard';
 import type { Product } from '@/types/product';
 import { productAPI } from '@/lib/api';
 
+type SortOption = 'default' | 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc';
+
 export default function ProductListPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [sortBy, setSortBy] = useState<SortOption>('default');
 
   // Fetch products from API
   useEffect(() => {
@@ -35,6 +38,22 @@ export default function ProductListPage() {
     fetchProducts();
   }, [page]);
 
+  // Sort products based on selected option
+  const sortedProducts = [...products].sort((a, b) => {
+    switch (sortBy) {
+      case 'price-asc':
+        return parseFloat(String(a.price)) - parseFloat(String(b.price));
+      case 'price-desc':
+        return parseFloat(String(b.price)) - parseFloat(String(a.price));
+      case 'name-asc':
+        return a.name.localeCompare(b.name);
+      case 'name-desc':
+        return b.name.localeCompare(a.name);
+      default:
+        return 0; // Keep original order
+    }
+  });
+
   const handleViewDetails = (productId: number) => {
     console.log('View product details:', productId);
     // TODO: Navigate to product details page
@@ -46,11 +65,40 @@ export default function ProductListPage() {
       <Navbar />
       <main className="container mt-4 flex-grow-1">
         <div className="row mb-4">
-          <div className="col">
+          <div className="col-md-8">
             <h1 className="display-5">Product Catalog</h1>
             <p className="text-muted">
               {products.length > 0 ? 'Browse our selection of products' : 'Loading products from database...'}
             </p>
+          </div>
+          <div className="col-md-4">
+            <div className="d-flex flex-column align-items-md-end mt-3 mt-md-0">
+              <div className="d-flex align-items-center">
+                <label htmlFor="sortSelect" className="me-2 text-nowrap">
+                  <i className="bi bi-sort-down me-1"></i>
+                  Sort by:
+                </label>
+                <select
+                  id="sortSelect"
+                  className={`form-select form-select-sm ${sortBy !== 'default' ? 'border-primary' : ''}`}
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as SortOption)}
+                  style={{ width: 'auto', minWidth: '180px' }}
+                >
+                  <option value="default">Default</option>
+                  <option value="name-asc">Name (A-Z)</option>
+                  <option value="name-desc">Name (Z-A)</option>
+                  <option value="price-asc">Price (Low to High)</option>
+                  <option value="price-desc">Price (High to Low)</option>
+                </select>
+              </div>
+              {sortBy !== 'default' && (
+                <small className="text-muted mt-1">
+                  <i className="bi bi-check-circle-fill text-success me-1"></i>
+                  Sorting applied across all pages
+                </small>
+              )}
+            </div>
           </div>
         </div>
 
@@ -75,7 +123,7 @@ export default function ProductListPage() {
         {!loading && (
           <>
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-              {products.map((product) => (
+              {sortedProducts.map((product) => (
                 <div key={product.id} className="col">
                   <ProductCard 
                     product={product}
