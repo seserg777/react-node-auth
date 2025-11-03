@@ -4,10 +4,21 @@ echo "🔍 Running pre-commit checks..."
 echo "🧪 Running backend tests..."
 cd apps/backend
 npm test
-test_exit_code=$?
+backend_exit_code=$?
 
-if [ $test_exit_code -ne 0 ]; then
-  echo "❌ Tests failed! Commit blocked."
+if [ $backend_exit_code -ne 0 ]; then
+  echo "❌ Backend tests failed! Commit blocked."
+  exit 1
+fi
+
+# Run tests for frontend-next
+echo "🧪 Running frontend-next tests..."
+cd ../frontend-next
+npm test
+frontend_exit_code=$?
+
+if [ $frontend_exit_code -ne 0 ]; then
+  echo "❌ Frontend tests failed! Commit blocked."
   exit 1
 fi
 

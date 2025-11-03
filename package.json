@@ -10,7 +10,9 @@
     "build:next": "turbo run build --filter=backend --filter=frontend-next",
     "lint": "turbo run lint",
     "clean": "turbo run clean",
-    "test": "cd apps/backend && npm test",
+    "test": "turbo run test",
+    "test:backend": "cd apps/backend && npm test",
+    "test:frontend": "cd apps/frontend-next && npm test",
     "prepare": "husky"
   },
   "devDependencies": {
