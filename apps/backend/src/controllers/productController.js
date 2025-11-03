@@ -1,5 +1,5 @@
 // Product controller
-const { Product } = require('../models');
+const Product = require('../models/Product');
 const { Op } = require('sequelize');
 
 class ProductController {
@@ -85,6 +85,7 @@ class ProductController {
   // Get product categories
   async getCategories(req, res) {
     try {
+      const { sequelize } = require('../config/database');
       const categories = await Product.findAll({
         attributes: [[sequelize.fn('DISTINCT', sequelize.col('category')), 'category']],
         where: {

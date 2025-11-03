@@ -1,5 +1,5 @@
 // Product seeder - generates 100 random products
-const { Product } = require('../models');
+const Product = require('../models/Product');
 
 const categories = ['Electronics', 'Accessories', 'Computers', 'Gaming', 'Office', 'Audio', 'Mobile', 'Cameras'];
 
