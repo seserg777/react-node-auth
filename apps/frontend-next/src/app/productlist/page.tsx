@@ -35,72 +35,11 @@ export default function ProductListPage() {
     fetchProducts();
   }, [page]);
 
-  // Fallback mock data if API fails
-  const mockProducts: Product[] = [
-    {
-      id: 1,
-      name: 'Laptop Pro 15',
-      description: 'High-performance laptop with 16GB RAM and 512GB SSD',
-      price: 1299.99,
-      category: 'Electronics',
-      inStock: true,
-      image: 'https://via.placeholder.com/300x200/0d6efd/ffffff?text=Laptop+Pro'
-    },
-    {
-      id: 2,
-      name: 'Wireless Mouse',
-      description: 'Ergonomic wireless mouse with precision tracking',
-      price: 29.99,
-      category: 'Accessories',
-      inStock: true,
-      image: 'https://via.placeholder.com/300x200/198754/ffffff?text=Mouse'
-    },
-    {
-      id: 3,
-      name: 'USB-C Hub',
-      description: '7-in-1 USB-C hub with multiple ports',
-      price: 49.99,
-      category: 'Accessories',
-      inStock: false,
-      image: 'https://via.placeholder.com/300x200/dc3545/ffffff?text=USB+Hub'
-    },
-    {
-      id: 4,
-      name: 'Mechanical Keyboard',
-      description: 'RGB backlit mechanical keyboard with blue switches',
-      price: 89.99,
-      category: 'Accessories',
-      inStock: true,
-      image: 'https://via.placeholder.com/300x200/ffc107/000000?text=Keyboard'
-    },
-    {
-      id: 5,
-      name: '4K Monitor 27"',
-      description: 'Ultra HD 4K monitor with HDR support',
-      price: 399.99,
-      category: 'Electronics',
-      inStock: true,
-      image: 'https://via.placeholder.com/300x200/6f42c1/ffffff?text=Monitor'
-    },
-    {
-      id: 6,
-      name: 'Webcam HD',
-      description: '1080p webcam with built-in microphone',
-      price: 79.99,
-      category: 'Electronics',
-      inStock: true,
-      image: 'https://via.placeholder.com/300x200/fd7e14/ffffff?text=Webcam'
-    }
-  ];
-
   const handleViewDetails = (productId: number) => {
     console.log('View product details:', productId);
     // TODO: Navigate to product details page
     alert(`View details for product ID: ${productId}`);
   };
-
-  // Use mock data if real data fails to load
-  const displayProducts = products.length > 0 ? products : (error ? mockProducts : []);
 
   return (
     <div className="d-flex flex-column min-vh-100">
@@ -117,8 +56,8 @@ export default function ProductListPage() {
 
         {/* Error Alert */}
         {error && (
-          <div className="alert alert-warning" role="alert">
-            <strong>Warning:</strong> Could not load products from server. Showing sample data. {error}
+          <div className="alert alert-danger" role="alert">
+            <strong>Error:</strong> Could not load products from server. {error}
           </div>
         )}
 
@@ -136,18 +75,18 @@ export default function ProductListPage() {
         {!loading && (
           <>
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-              {displayProducts.map((product) => (
-            <div key={product.id} className="col">
-              <ProductCard 
-                product={product}
-                onViewDetails={handleViewDetails}
-              />
+              {products.map((product) => (
+                <div key={product.id} className="col">
+                  <ProductCard 
+                    product={product}
+                    onViewDetails={handleViewDetails}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
             {/* Empty state */}
-            {displayProducts.length === 0 && !loading && (
+            {products.length === 0 && !loading && (
               <div className="col-12 text-center py-5">
                 <h3 className="text-muted">No products available</h3>
                 <p>Check back later for new items</p>
