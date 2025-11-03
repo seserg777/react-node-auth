@@ -17,17 +17,21 @@ react-node-auth/
 
 ## Frontend Options
 
-The project includes **two frontend implementations**:
+The project includes **two frontend implementations** that you can run independently:
 
 1. **`apps/frontend`** - Original React (Create React App)
    - Traditional SPA with React Router
    - Client-side rendering only
+   - Run with: `npm run dev:react`
 
-2. **`apps/frontend-next`** - Next.js 14+ (Recommended)
+2. **`apps/frontend-next`** - Next.js 14+ (✅ Recommended)
    - App Router with Server Components
    - TypeScript for type safety
    - Better SEO and performance
    - Modern architecture
+   - Run with: `npm run dev:next`
+
+**Note:** Both frontends cannot run simultaneously on port 3000. Use Turborepo commands to select which one to run.
 
 ## Technologies
 
