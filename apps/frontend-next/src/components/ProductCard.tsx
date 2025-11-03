@@ -48,7 +48,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
         <div className="mt-auto">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <span className="h5 mb-0 text-primary">
-              ${product.price.toFixed(2)}
+              ${typeof product.price === 'number' ? product.price.toFixed(2) : parseFloat(product.price).toFixed(2)}
             </span>
             {product.inStock !== undefined && (
               <span className={`badge ${product.inStock ? 'bg-success' : 'bg-danger'}`}>

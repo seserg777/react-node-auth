@@ -129,5 +129,29 @@ describe('ProductCard Component', () => {
     const viewDetailsButton = screen.queryByRole('button', { name: /view details/i });
     expect(viewDetailsButton).not.toBeInTheDocument();
   });
+
+  it('handles string price from API (DECIMAL fields)', () => {
+    const productWithStringPrice = { ...mockProduct, price: '99.99' };
+    
+    render(
+      <Provider store={store}>
+        <ProductCard product={productWithStringPrice} />
+      </Provider>
+    );
+
+    expect(screen.getByText('$99.99')).toBeInTheDocument();
+  });
+
+  it('handles price without decimals', () => {
+    const productWithIntPrice = { ...mockProduct, price: '100' };
+    
+    render(
+      <Provider store={store}>
+        <ProductCard product={productWithIntPrice} />
+      </Provider>
+    );
+
+    expect(screen.getByText('$100.00')).toBeInTheDocument();
+  });
 });
 

@@ -3,7 +3,7 @@ export interface Product {
   id: number;
   name: string;
   description?: string;
-  price: number;
+  price: number | string; // API returns string from DECIMAL field
   image?: string;
   category?: string;
   inStock?: boolean;
