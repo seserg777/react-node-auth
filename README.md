@@ -8,11 +8,26 @@ Full-featured authentication application using React, Node.js, MySQL and JWT tok
 react-node-auth/
 ├── apps/
 │   ├── backend/          # Node.js API server
-│   └── frontend/         # React application
+│   ├── frontend/         # React application (original)
+│   └── frontend-next/    # Next.js 14+ application (App Router)
 ├── packages/             # Shared packages (if needed)
 ├── package.json          # Root package.json for turborepo
 └── turbo.json           # Turborepo configuration
 ```
+
+## Frontend Options
+
+The project includes **two frontend implementations**:
+
+1. **`apps/frontend`** - Original React (Create React App)
+   - Traditional SPA with React Router
+   - Client-side rendering only
+
+2. **`apps/frontend-next`** - Next.js 14+ (Recommended)
+   - App Router with Server Components
+   - TypeScript for type safety
+   - Better SEO and performance
+   - Modern architecture
 
 ## Technologies
 
@@ -27,13 +42,23 @@ react-node-auth/
 - **Jest** and **Supertest** for automated testing
 - **Module aliases** for clean imports
 
-### Frontend
+### Frontend (React - Original)
 - **React 18** with hooks
 - **React Router** for navigation
 - **Bootstrap 5** for UI
 - **Axios** for HTTP requests
 - **Redux Toolkit** for state management
 - Custom hooks (`useAuth`) for reusable logic
+
+### Frontend (Next.js - Recommended)
+- **Next.js 14+** with App Router
+- **TypeScript** for type safety
+- **Server Components** and Client Components
+- **Bootstrap 5** for consistent UI
+- **Axios** for HTTP requests
+- **Redux Toolkit** with SSR support
+- Custom hooks with Next.js navigation
+- Path aliases (`@/*`) for clean imports
 
 ## Installation and Setup
 
@@ -98,10 +123,16 @@ cd apps/backend
 npm run dev
 ```
 
-**Frontend (port 3000):**
+**Frontend - React (port 3000):**
 ```bash
 cd apps/frontend
 npm start
+```
+
+**Frontend - Next.js (port 3000):**
+```bash
+cd apps/frontend-next
+npm run dev
 ```
 
 ## API Endpoints
@@ -150,11 +181,11 @@ curl -X GET http://localhost:3001/api/health
 
 ## Features
 
-### Frontend Pages:
+### Frontend Pages (React & Next.js):
 1. **Home Page** (`/`) - Hello World with authentication status information
-2. **Login Page** (`/login`) - Login form
-3. **Register Page** (`/register`) - Registration form for new account
-4. **Profile Page** (`/profile`) - Edit user profile (name and email)
+2. **Login Page** (`/login`) - Login form with email validation
+3. **Register Page** (`/register`) - Registration form with strong password requirements
+4. **Profile Page** (`/profile`) - Edit user profile (name and email), delete account
 
 ### Security:
 - **Password Security**: Hashed with bcryptjs, strong password requirements (uppercase, lowercase, numbers, special characters, min 6 chars)
@@ -230,8 +261,12 @@ npm run build
 
 #### Option 2: Build Applications Separately
 ```bash
-# Build frontend only
+# Build React frontend
 cd apps/frontend
+npm run build
+
+# Or build Next.js frontend (recommended)
+cd apps/frontend-next
 npm run build
 
 # Build backend only (if needed)
@@ -241,7 +276,33 @@ npm run build
 
 ### Running Production Build
 
-#### Windows (PowerShell/CMD)
+#### Option 1: Next.js (Recommended)
+
+**Windows (PowerShell/CMD):**
+```powershell
+# Start backend server
+cd apps/backend
+node src/index.js
+
+# In another terminal, start Next.js production server
+cd apps/frontend-next
+npm start
+```
+
+**macOS/Linux (Terminal):**
+```bash
+# Start backend server
+cd apps/backend
+node src/index.js
+
+# In another terminal, start Next.js production server
+cd apps/frontend-next
+npm start
+```
+
+#### Option 2: React (Static Build)
+
+**Windows (PowerShell/CMD):**
 ```powershell
 # Start backend server
 cd apps/backend
@@ -255,7 +316,7 @@ python -m http.server 8080
 npx serve -s . -l 8080
 ```
 
-#### macOS/Linux (Terminal)
+**macOS/Linux (Terminal):**
 ```bash
 # Start backend server
 cd apps/backend
@@ -435,19 +496,43 @@ apps/backend/src/
 └── index.js          # Main server file
 ```
 
+### Frontend Structure (Next.js):
+```
+apps/frontend-next/src/
+├── app/              # App Router pages
+│   ├── layout.tsx    # Root layout
+│   ├── page.tsx      # Home page
+│   ├── login/        # Login page
+│   ├── register/     # Register page
+│   └── profile/      # Profile page
+├── components/       # Reusable components (Navbar, Footer)
+├── hooks/            # Custom hooks (useAuth)
+├── lib/              # Redux store and features
+│   ├── store.ts      # Redux store configuration
+│   ├── api.ts        # API client with axios
+│   └── features/     # Redux slices (authSlice)
+└── types/            # TypeScript type definitions
+```
+
 ### Module Aliases:
-The backend uses path aliases for clean imports:
+
+**Backend aliases** for clean imports:
 - `@config` → `apps/backend/src/config`
 - `@controllers` → `apps/backend/src/controllers`
 - `@routes` → `apps/backend/src/routes`
 - `@models` → `apps/backend/src/models`
 - `@middleware` → `apps/backend/src/middleware`
-- `@utils` → `apps/backend/src/utils`
 
-Example:
+**Next.js aliases** (TypeScript path mapping):
+- `@/*` → `apps/frontend-next/src/*`
+Example usage:
 ```javascript
-// Instead of: require('../../../config/database')
+// Backend (Node.js)
 const { sequelize } = require('@config/database');
+
+// Next.js (TypeScript)
+import { useAuth } from '@/hooks/useAuth';
+import Navbar from '@/components/Navbar';
 ```
 
 ## Troubleshooting
