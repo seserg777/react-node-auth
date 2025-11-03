@@ -102,7 +102,7 @@ export default function MiniCart() {
                                 <div>
                                   <h6 className="mb-0">{item.name}</h6>
                                   <small className="text-muted">
-                                    ${item.price.toFixed(2)} each
+                                    ${typeof item.price === 'number' ? item.price.toFixed(2) : parseFloat(item.price).toFixed(2)} each
                                   </small>
                                 </div>
                                 <button 
@@ -140,7 +140,7 @@ export default function MiniCart() {
                                   </button>
                                 </div>
                                 <strong className="text-primary">
-                                  ${(item.price * item.quantity).toFixed(2)}
+                                  ${(parseFloat(String(item.price)) * item.quantity).toFixed(2)}
                                 </strong>
                               </div>
                             </div>

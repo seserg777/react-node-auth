@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface CartItem {
   id: number;
   name: string;
-  price: number;
+  price: number | string; // API returns string from DECIMAL field
   quantity: number;
   image?: string;
 }
@@ -24,7 +24,10 @@ const initialState: CartState = {
 // Helper function to calculate totals
 const calculateTotals = (items: CartItem[]) => {
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const totalPrice = items.reduce((sum, item) => {
+    const price = typeof item.price === 'number' ? item.price : parseFloat(item.price);
+    return sum + (price * item.quantity);
+  }, 0);
   return { totalItems, totalPrice };
 };
 
