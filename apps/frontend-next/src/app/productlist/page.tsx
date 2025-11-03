@@ -91,7 +91,7 @@ export default function ProductListPage() {
       inStock: true,
       image: 'https://via.placeholder.com/300x200/fd7e14/ffffff?text=Webcam'
     }
-  ]);
+  ];
 
   const handleViewDetails = (productId: number) => {
     console.log('View product details:', productId);
