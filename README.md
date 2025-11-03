@@ -160,6 +160,9 @@ npm run dev
 ```bash
 cd apps/backend
 npm run dev
+
+# Generate 100 sample products (run once, optional)
+npm run seed:products
 ```
 
 **Frontend - React (port 3000):**

@@ -87,10 +87,6 @@ const startServer = async () => {
     // Sync database (create tables if they don't exist)
     await syncDatabase();
     
-    // Seed products if needed
-    const { generateProducts } = require('./seeders/productSeeder');
-    await generateProducts();
-    
     // Start listening
     app.listen(config.port, () => {
       console.log(`Server is running on port ${config.port}`);
