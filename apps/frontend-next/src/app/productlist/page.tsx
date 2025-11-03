@@ -65,12 +65,6 @@ export default function ProductListPage() {
     }
   ]);
 
-  const handleAddToCart = (product: Product) => {
-    console.log('Added to cart:', product);
-    // TODO: Implement cart functionality
-    alert(`Added "${product.name}" to cart!`);
-  };
-
   const handleViewDetails = (productId: number) => {
     console.log('View product details:', productId);
     // TODO: Navigate to product details page
@@ -94,7 +88,6 @@ export default function ProductListPage() {
             <div key={product.id} className="col">
               <ProductCard 
                 product={product}
-                onAddToCart={handleAddToCart}
                 onViewDetails={handleViewDetails}
               />
             </div>

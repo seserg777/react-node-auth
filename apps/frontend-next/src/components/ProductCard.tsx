@@ -1,6 +1,10 @@
 // Product card component
 'use client';
 
+import { useDispatch } from 'react-redux';
+import { addToCart } from '@/lib/features/cartSlice';
+import type { AppDispatch } from '@/lib/store';
+
 interface Product {
   id: number;
   name: string;
@@ -13,11 +17,21 @@ interface Product {
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart?: (product: Product) => void;
   onViewDetails?: (productId: number) => void;
 }
 
-export default function ProductCard({ product, onAddToCart, onViewDetails }: ProductCardProps) {
+export default function ProductCard({ product, onViewDetails }: ProductCardProps) {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image
+    }));
+  };
+
   return (
     <div className="card h-100">
       {product.image && (
@@ -60,15 +74,13 @@ export default function ProductCard({ product, onAddToCart, onViewDetails }: Pro
                 View Details
               </button>
             )}
-            {onAddToCart && (
-              <button 
-                className="btn btn-primary btn-sm"
-                onClick={() => onAddToCart(product)}
-                disabled={product.inStock === false}
-              >
-                Add to Cart
-              </button>
-            )}
+            <button 
+              className="btn btn-primary btn-sm"
+              onClick={handleAddToCart}
+              disabled={product.inStock === false}
+            >
+              {product.inStock === false ? 'Out of Stock' : 'Add to Cart'}
+            </button>
           </div>
         </div>
       </div>

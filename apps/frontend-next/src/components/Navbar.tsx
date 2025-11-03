@@ -3,6 +3,7 @@
 
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
+import MiniCart from './MiniCart';
 
 export default function Navbar() {
   const { user, isAuthenticated, handleLogout } = useAuth();
@@ -11,7 +12,7 @@ export default function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container">
         <Link className="navbar-brand" href="/">
-          React Node Auth
+          Next.js + Node Auth
         </Link>
         
         <button
@@ -33,6 +34,12 @@ export default function Navbar() {
           </ul>
           
           <ul className="navbar-nav align-items-center">
+            <li className="nav-item">
+              <Link className="nav-link d-flex align-items-center" href="/productlist">
+                Product List
+              </Link>
+            </li>
+
             {isAuthenticated && user ? (
               <>
                 <li className="nav-item">
@@ -68,6 +75,10 @@ export default function Navbar() {
                 </li>
               </>
             )}
+
+            <li className="nav-item ms-2">
+              <MiniCart />
+            </li>
           </ul>
         </div>
       </div>
