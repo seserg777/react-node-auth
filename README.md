@@ -118,9 +118,10 @@ npm run dev:react
 npm run dev
 ```
 
-- **Frontend**: http://localhost:3000
+- **Frontend**: http://localhost:3000 (⚠️ use HTTP, not HTTPS in development)
 - **Backend**: http://localhost:3001
 - **Health Check**: http://localhost:3001/api/health
+- **BrowserSync**: http://localhost:3002 (optional, when using `dev:sync`)
 
 #### Available Turborepo Commands
 
@@ -582,7 +583,43 @@ import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/components/Navbar';
 ```
 
+## BrowserSync (Optional)
+
+BrowserSync provides live reloading and browser synchronization across multiple devices.
+
+### React Frontend with BrowserSync:
+```bash
+cd apps/frontend
+npm run dev:sync
+```
+
+### Next.js Frontend with BrowserSync:
+```bash
+cd apps/frontend-next
+npm run dev:sync
+```
+
+Access via BrowserSync at: http://localhost:3002
+
+**Features:**
+- Live reload on file changes
+- Synchronize scrolling and clicks across devices
+- Network-accessible URL for mobile testing
+- Browser console error notifications
+
 ## Troubleshooting
+
+### ERR_SSL_PROTOCOL_ERROR in Browser
+
+If you see an SSL error when opening `localhost:3000`:
+
+1. **Use HTTP (not HTTPS)**: Open `http://localhost:3000` explicitly
+2. **Clear HSTS settings in Chrome**:
+   - Go to: `chrome://net-internals/#hsts`
+   - Under "Delete domain security policies", enter `localhost`
+   - Click "Delete"
+3. **Use Incognito/Private mode** for testing
+4. **Alternatively, use BrowserSync**: `npm run dev:sync` and open `http://localhost:3002`
 
 ### Common Issues:
 

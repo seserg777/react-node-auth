@@ -49,9 +49,11 @@ npm run dev
 
 ### URLs
 
-- **Frontend**: http://localhost:3000
+- **Frontend**: http://localhost:3000 (⚠️ use HTTP, not HTTPS)
 - **Backend API**: http://localhost:3001/api
 - **Health Check**: http://localhost:3001/api/health
+- **BrowserSync (React)**: http://localhost:3002 (if using `dev:sync`)
+- **BrowserSync (Next.js)**: http://localhost:3002 (if using `dev:sync`)
 
 ## Testing
 
@@ -97,7 +99,36 @@ npm run build:react
 
 4. **Check Health** - Visit http://localhost:3001/api/health
 
+## BrowserSync (Optional)
+
+BrowserSync позволяет синхронизировать браузеры на нескольких устройствах и автоматически обновлять страницу.
+
+**React с BrowserSync:**
+```bash
+cd apps/frontend
+npm run dev:sync
+```
+
+**Next.js с BrowserSync:**
+```bash
+cd apps/frontend-next
+npm run dev:sync
+```
+
+Откройте http://localhost:3002 для доступа через BrowserSync.
+
 ## Troubleshooting
+
+### ERR_SSL_PROTOCOL_ERROR в браузере
+
+Если браузер показывает ошибку SSL при открытии `localhost:3000`:
+
+1. **Используйте HTTP** (не HTTPS): `http://localhost:3000`
+2. **Очистите HSTS в Chrome**:
+   - Откройте: `chrome://net-internals/#hsts`
+   - В "Delete domain security policies" введите `localhost`
+   - Нажмите "Delete"
+3. **Используйте режим инкогнито** для тестирования
 
 ### Port Already in Use
 
