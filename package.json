@@ -4,6 +4,10 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:react": "turbo run dev --filter=backend --filter=frontend",
+    "dev:next": "turbo run dev --filter=backend --filter=frontend-next",
+    "build:react": "turbo run build --filter=backend --filter=frontend",
+    "build:next": "turbo run build --filter=backend --filter=frontend-next",
     "lint": "turbo run lint",
     "clean": "turbo run clean",
     "test": "cd apps/backend && npm test",

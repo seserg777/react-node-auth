@@ -98,24 +98,56 @@ DB_NAME=reactnode
 ### 3. Running Applications
 
 #### Quick Start (Development)
+
+**Run Backend + Next.js (Recommended):**
 ```bash
-# Run all applications in development mode
+npm run dev:next
+```
+
+**Run Backend + React:**
+```bash
+npm run dev:react
+```
+
+**Run All (Backend + Both Frontends):**
+```bash
 npm run dev
 ```
+
 - **Frontend**: http://localhost:3000
 - **Backend**: http://localhost:3001
 - **Health Check**: http://localhost:3001/api/health
 
-#### Running via turborepo (recommended):
-```bash
-# Run all applications in development mode
-npm run dev
+#### Available Turborepo Commands
 
-# Build all applications
-npm run build
+| Command | Description |
+|---------|-------------|
+| `npm run dev:react` | Run Backend + React Frontend |
+| `npm run dev:next` | Run Backend + Next.js Frontend (Recommended) |
+| `npm run dev` | Run Backend + Both Frontends |
+| `npm run build:react` | Build Backend + React Frontend |
+| `npm run build:next` | Build Backend + Next.js Frontend |
+| `npm run build` | Build All Applications |
+| `npm test` | Run Backend Tests |
+
+#### Option 1: Using Turborepo (Recommended)
+
+**Run Backend + React Frontend:**
+```bash
+npm run dev:react
 ```
 
-#### Running applications separately:
+**Run Backend + Next.js Frontend:**
+```bash
+npm run dev:next
+```
+
+**Run All (Backend + Both Frontends):**
+```bash
+npm run dev
+```
+
+#### Option 2: Running applications separately
 
 **Backend (port 3001):**
 ```bash
@@ -253,9 +285,20 @@ DB_NAME=reactnode
 
 ### Building the Application
 
-#### Option 1: Build All Applications (Recommended)
+#### Option 1: Using Turborepo (Recommended)
+
+**Build Backend + React Frontend:**
 ```bash
-# Build both frontend and backend
+npm run build:react
+```
+
+**Build Backend + Next.js Frontend:**
+```bash
+npm run build:next
+```
+
+**Build All:**
+```bash
 npm run build
 ```
 
