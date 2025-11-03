@@ -60,6 +60,15 @@ const authLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+// Rate limiting for product endpoints (more generous for browsing)
+const productsLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 100, // 100 requests per minute per IP (allows browsing/pagination)
+  message: 'Too many product requests, please slow down.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
@@ -70,7 +79,7 @@ app.use(mongoSanitize());
 // Routes
 app.use('/api', apiLimiter);
 app.use('/api/auth', authLimiter, authRoutes);
-app.use('/api/products', productRoutes);
+app.use('/api/products', productsLimiter, productRoutes);
 
 // Health check endpoint
 app.get('/api/health', healthController.getHealth);
