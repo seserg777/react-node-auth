@@ -4,7 +4,8 @@
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import ProductCard, { type Product } from '@/components/ProductCard';
+import ProductCard from '@/components/ProductCard';
+import type { Product } from '@/types/product';
 import { productAPI } from '@/lib/api';
 
 export default function ProductListPage() {

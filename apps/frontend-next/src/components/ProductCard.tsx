@@ -4,16 +4,7 @@
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/lib/features/cartSlice';
 import type { AppDispatch } from '@/lib/store';
-
-interface Product {
-  id: number;
-  name: string;
-  description?: string;
-  price: number;
-  image?: string;
-  category?: string;
-  inStock?: boolean;
-}
+import type { Product } from '@/types/product';
 
 interface ProductCardProps {
   product: Product;
