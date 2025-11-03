@@ -1,0 +1,55 @@
+// Home page
+'use client';
+
+import { useAuth } from '@/hooks/useAuth';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+
+export default function Home() {
+  const { user, isAuthenticated, handleLogout } = useAuth();
+
+  return (
+    <div className="d-flex flex-column min-vh-100">
+      <Navbar />
+      <main className="container mt-4 flex-grow-1">
+        <div className="row justify-content-center">
+          <div className="col-md-8">
+            <div className="card">
+              <div className="card-body text-center">
+                <h1 className="card-title display-4">Hello World!</h1>
+                <p className="card-text lead">
+                  Welcome to React Node Auth Application (Next.js)
+                </p>
+                
+                {isAuthenticated && user ? (
+                  <div className="alert alert-success" role="alert">
+                    <h4 className="alert-heading">Hello, {user.name || user.email}!</h4>
+                    <div className="text-center mt-3">
+                      <button 
+                        className="btn btn-danger btn-sm"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="alert alert-info" role="alert">
+                    <h4 className="alert-heading">Welcome Guest!</h4>
+                    <p>
+                      Please <a href="/login" className="alert-link">login</a> or{' '}
+                      <a href="/register" className="alert-link">register</a> to access 
+                      protected features.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
