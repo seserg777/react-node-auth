@@ -284,10 +284,37 @@ curl -X GET http://localhost:3001/api/products/categories
    - Server-side pagination (12 products per page)
    - Server-side sorting (5 options)
    - Responsive grid layout
+6. **Product Detail** (`/product/[id]`) - Detailed product view page ✨ NEW
+   - Large product images (500x500px)
+   - Full product information (name, description, category, price)
+   - Stock status and quantity selector
+   - "Add to Cart" and "Buy Now" buttons
+   - Breadcrumb navigation
+   - Product information table
+7. **Shopping Cart** (`/cart`) - Full shopping cart page ✨ NEW
+   - Complete cart items table with images
+   - Quantity management for each item
+   - Remove individual items or clear entire cart
+   - Order summary with subtotal, shipping, tax, and total
+   - Payment methods information
+   - Promo code field (coming soon)
+   - Empty cart state with "Start Shopping" CTA
 
 ### E-commerce Features (Next.js):
-- 🛒 **Shopping Cart** - Mini cart with icon and item counter in navbar
+- 🛒 **Shopping Cart System** - Complete cart functionality
+  - Mini cart modal with icon and item counter in navbar
+  - Full cart page with detailed view (`/cart`)
+  - Real-time cart updates with Redux
+  - "View Cart & Checkout" button in mini cart
 - 📦 **Product Catalog** - 100 products in 8 categories from MySQL database
+- 🔍 **Product Details Page** - Full product view (`/product/[id]`) ✨ NEW
+  - High-quality product images
+  - Detailed product information
+  - Stock status and availability
+  - Quantity selector with +/- controls
+  - "Buy Now" (instant checkout) and "Add to Cart" buttons
+  - Breadcrumb navigation
+  - Product specifications table
 - 📄 **Pagination** - Navigate through 9 pages (12 products each)
   - SEO-friendly `<Link>` components
   - URL-based navigation (`?page=N`)
@@ -299,11 +326,22 @@ curl -X GET http://localhost:3001/api/products/categories
   - Price (Low to High / High to Low)
   - Works across all 100 products
   - State persists during session
-- ➕ **Add to Cart** - One-click add products from catalog
-- 🔢 **Quantity Management** - Increase/decrease in cart modal
-- 🗑️ **Remove Items** - Delete individual items or clear cart
+- ➕ **Add to Cart** - Multiple ways to add products:
+  - From product catalog cards
+  - From product detail page with quantity selection
+  - "Buy Now" for instant cart navigation
+- 🔢 **Quantity Management** - Full quantity control
+  - Increase/decrease in mini cart modal
+  - Bulk quantity selection on product page
+  - Direct input in cart page table
+- 🗑️ **Remove Items** - Delete individual items or clear entire cart
 - 💾 **Cart Persistence** - localStorage, survives page refresh
-- 💰 **Price Calculations** - Auto-calculated totals (handles string/number types)
+- 💰 **Price Calculations** - Auto-calculated totals
+  - Subtotal for all items
+  - Tax calculation (10%)
+  - Free shipping on all orders
+  - Grand total display
+  - Handles string/number price types from API
 - 🎨 **Responsive Design** - Mobile, tablet, desktop optimized
 - 🎯 **Reusable Components** - Modular architecture for easy extension
 
@@ -322,17 +360,33 @@ curl -X GET http://localhost:3001/api/products/categories
 
 ### UI/UX:
 - **Responsive Design** - Bootstrap 5 with mobile-first approach
-- **Dynamic Navbar** - User name, cart counter, conditional auth buttons
-- **Mini Cart** - Modal with full cart management (add/update/remove)
+- **Dynamic Navbar** - User name, cart counter, cart link, conditional auth buttons
+- **Mini Cart Modal** - Quick cart preview with management (add/update/remove)
+- **Full Cart Page** - Detailed cart view with table layout ✨ NEW
+  - Product thumbnails and information
+  - Quantity controls for each item
+  - Order summary sidebar with sticky positioning
+  - Empty cart state with shopping CTA
+  - Payment methods display
+- **Product Detail Page** - Comprehensive product view ✨ NEW
+  - Large product image (500x500px)
+  - Quantity selector with stock validation
+  - "Add to Cart" and "Buy Now" actions
+  - Breadcrumb navigation
+  - Product specifications table
+  - Stock status indicators
+  - Success notifications on add to cart
 - **Product Grid** - Responsive cards with images, prices, stock status
 - **Pagination** - SEO-friendly links, ellipsis, smooth scrolling
 - **Sorting Dropdown** - Visual feedback, active state indicators
 - **Alert System** - Error/Success/Warning/Info with icons and dismiss
 - **Loading States** - Spinners for async operations
 - **System Messages** - Redux state management
-- **Auto Redirect** - After auth actions
+- **Auto Redirect** - After auth actions and "Buy Now"
 - **Email Validation** - Client and server-side
 - **Profile Management** - Edit/Delete with confirmation
+- **Navigation Flow** - Seamless product browsing to checkout
+  - Product List → Product Details → Cart → Checkout
 - **Custom Branding** - Favicon and "Created by Serhii Soloviov" footer
 - **Protected Routes** - Login redirect for authenticated pages
 
@@ -729,7 +783,9 @@ apps/frontend-next/src/
 │   ├── login/page.tsx      # Login route
 │   ├── register/page.tsx   # Register route
 │   ├── profile/page.tsx    # Profile route
-│   └── productlist/page.tsx # Product catalog with pagination & sorting
+│   ├── productlist/page.tsx # Product catalog with pagination & sorting
+│   ├── product/[id]/page.tsx # Product detail page (dynamic route) ✨ NEW
+│   └── cart/page.tsx       # Shopping cart page ✨ NEW
 ├── components/             # Reusable UI components
 │   ├── Navbar.tsx          # Nav with auth state + MiniCart
 │   ├── Footer.tsx          # Footer with creator info
@@ -936,11 +992,16 @@ If you see an SSL error when opening `localhost:3000`:
 
 ✅ Complete authentication system (register, login, profile management)  
 ✅ Two frontend implementations (React & Next.js)  
-✅ Shopping cart functionality with Redux (Next.js)  
+✅ Full e-commerce functionality (Next.js) ✨ ENHANCED
+  - Product catalog with pagination and sorting
+  - Product detail pages with dynamic routing
+  - Shopping cart system (mini cart + full page)
+  - Quantity management and price calculations
+  - Redux state management with persistence
 ✅ Product catalog with reusable components  
 ✅ RESTful API with validation  
 ✅ Database integration with Sequelize ORM  
-✅ Comprehensive testing suite (18 tests)  
+✅ Comprehensive testing suite (112 tests)  
 ✅ Production-ready security measures  
 ✅ BrowserSync integration  
 ✅ Component-based architecture  

@@ -70,9 +70,7 @@ export default function ProductListPage() {
   };
 
   const handleViewDetails = (productId: number) => {
-    console.log('View product details:', productId);
-    // TODO: Navigate to product details page
-    alert(`View details for product ID: ${productId}`);
+    router.push(`/product/${productId}`);
   };
 
   return (

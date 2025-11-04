@@ -2,11 +2,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, updateQuantity, clearCart } from '@/lib/features/cartSlice';
 import type { RootState, AppDispatch } from '@/lib/store';
 
 export default function MiniCart() {
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const { items, totalItems, totalPrice } = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch<AppDispatch>();
@@ -164,11 +166,11 @@ export default function MiniCart() {
                       <button 
                         className="btn btn-primary"
                         onClick={() => {
-                          alert('Checkout functionality to be implemented');
                           setShowModal(false);
+                          router.push('/cart');
                         }}
                       >
-                        Proceed to Checkout
+                        View Cart & Checkout
                       </button>
                       <button 
                         className="btn btn-outline-danger btn-sm"
