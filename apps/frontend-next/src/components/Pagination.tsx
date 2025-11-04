@@ -2,6 +2,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface PaginationProps {
   currentPage: number;
@@ -20,12 +21,16 @@ export default function Pagination({
   maxVisiblePages = 5,
   className = '',
 }: PaginationProps) {
+  const router = useRouter();
+  
   if (totalPages <= 1) {
     return null;
   }
 
-  const handleClick = (pageNum: number) => {
+  const handleClick = (e: React.MouseEvent, pageNum: number) => {
+    e.preventDefault();
     onPageChange(pageNum);
+    router.push(buildUrl(pageNum), { scroll: false });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -63,10 +68,7 @@ export default function Pagination({
               <Link
                 href={buildUrl(currentPage - 1)}
                 className="page-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleClick(currentPage - 1);
-                }}
+                onClick={(e) => handleClick(e, currentPage - 1)}
               >
                 Previous
               </Link>
@@ -80,10 +82,7 @@ export default function Pagination({
                 <Link
                   href={buildUrl(1)}
                   className="page-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleClick(1);
-                  }}
+                  onClick={(e) => handleClick(e, 1)}
                 >
                   1
                 </Link>
@@ -111,10 +110,7 @@ export default function Pagination({
                 <Link
                   href={buildUrl(pageNum)}
                   className="page-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleClick(pageNum);
-                  }}
+                  onClick={(e) => handleClick(e, pageNum)}
                 >
                   {pageNum}
                 </Link>
@@ -134,10 +130,7 @@ export default function Pagination({
                 <Link
                   href={buildUrl(totalPages)}
                   className="page-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleClick(totalPages);
-                  }}
+                  onClick={(e) => handleClick(e, totalPages)}
                 >
                   {totalPages}
                 </Link>
@@ -153,10 +146,7 @@ export default function Pagination({
               <Link
                 href={buildUrl(currentPage + 1)}
                 className="page-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleClick(currentPage + 1);
-                }}
+                onClick={(e) => handleClick(e, currentPage + 1)}
               >
                 Next
               </Link>
