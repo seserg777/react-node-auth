@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
@@ -15,33 +15,27 @@ import { productAPI } from '@/lib/api';
 
 export default function ProductListPage() {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   
-  // Parse page from pathname (e.g., /productlist/page-3 -> 3)
-  const getPageFromPath = () => {
-    const match = pathname?.match(/\/page-(\d+)/);
-    return match ? parseInt(match[1], 10) : 1;
-  };
-  
-  // Get sort from URL query params
+  // Get page and sort from URL query params
+  const pageFromUrl = parseInt(searchParams.get('page') || '1', 10);
   const sortFromUrl = (searchParams.get('sort') || 'default') as SortOption;
   
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(getPageFromPath());
+  const [page, setPage] = useState(pageFromUrl);
   const [totalPages, setTotalPages] = useState(1);
   const [sortBy, setSortBy] = useState<SortOption>(sortFromUrl);
 
   // Sync state with URL changes (browser back/forward)
   useEffect(() => {
-    const newPage = getPageFromPath();
+    const newPage = parseInt(searchParams.get('page') || '1', 10);
     const newSort = (searchParams.get('sort') || 'default') as SortOption;
     
     if (newPage !== page) setPage(newPage);
     if (newSort !== sortBy) setSortBy(newSort);
-  }, [pathname, searchParams]);
+  }, [searchParams]);
 
   // Fetch products from API
   useEffect(() => {
@@ -68,11 +62,12 @@ export default function ProductListPage() {
 
   // Build URL for pagination links
   const buildUrl = (pageNum: number, sort: SortOption = sortBy) => {
-    let url = pageNum > 1 ? `/productlist/page-${pageNum}` : '/productlist';
-    if (sort !== 'default') {
-      url += `?sort=${sort}`;
-    }
-    return url;
+    const params = new URLSearchParams();
+    if (pageNum > 1) params.set('page', pageNum.toString());
+    if (sort !== 'default') params.set('sort', sort);
+    
+    const queryString = params.toString();
+    return queryString ? `/productlist?${queryString}` : '/productlist';
   };
 
   // Handle sort change
