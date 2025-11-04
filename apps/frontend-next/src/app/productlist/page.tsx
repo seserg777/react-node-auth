@@ -2,21 +2,38 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
+import ProductSort, { type SortOption } from '@/components/ProductSort';
+import { useProductSort } from '@/hooks/useProductSort';
 import type { Product } from '@/types/product';
 import { productAPI } from '@/lib/api';
 
-type SortOption = 'default' | 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc';
-
 export default function ProductListPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // Get page from URL or default to 1
+  const pageFromUrl = parseInt(searchParams.get('page') || '1', 10);
+  const sortFromUrl = (searchParams.get('sort') || 'default') as SortOption;
+  
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(pageFromUrl);
   const [totalPages, setTotalPages] = useState(1);
-  const [sortBy, setSortBy] = useState<SortOption>('default');
+  const [sortBy, setSortBy] = useState<SortOption>(sortFromUrl);
+
+  // Sync state with URL parameters
+  useEffect(() => {
+    const pageFromUrl = parseInt(searchParams.get('page') || '1', 10);
+    const sortFromUrl = (searchParams.get('sort') || 'default') as SortOption;
+    
+    if (pageFromUrl !== page) setPage(pageFromUrl);
+    if (sortFromUrl !== sortBy) setSortBy(sortFromUrl);
+  }, [searchParams]);
 
   // Fetch products from API
   useEffect(() => {
@@ -38,21 +55,32 @@ export default function ProductListPage() {
     fetchProducts();
   }, [page]);
 
-  // Sort products based on selected option
-  const sortedProducts = [...products].sort((a, b) => {
-    switch (sortBy) {
-      case 'price-asc':
-        return parseFloat(String(a.price)) - parseFloat(String(b.price));
-      case 'price-desc':
-        return parseFloat(String(b.price)) - parseFloat(String(a.price));
-      case 'name-asc':
-        return a.name.localeCompare(b.name);
-      case 'name-desc':
-        return b.name.localeCompare(a.name);
-      default:
-        return 0; // Keep original order
-    }
-  });
+  // Use custom hook for sorting
+  const sortedProducts = useProductSort(products, sortBy);
+
+  // Update URL when page or sort changes
+  const updateUrl = (newPage: number, newSort: SortOption) => {
+    const params = new URLSearchParams();
+    if (newPage > 1) params.set('page', newPage.toString());
+    if (newSort !== 'default') params.set('sort', newSort);
+    
+    const queryString = params.toString();
+    const newUrl = queryString ? `/productlist?${queryString}` : '/productlist';
+    router.push(newUrl, { scroll: false });
+  };
+
+  // Handle page change
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    updateUrl(newPage, sortBy);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Handle sort change
+  const handleSortChange = (newSort: SortOption) => {
+    setSortBy(newSort);
+    updateUrl(page, newSort);
+  };
 
   const handleViewDetails = (productId: number) => {
     console.log('View product details:', productId);
@@ -72,33 +100,11 @@ export default function ProductListPage() {
             </p>
           </div>
           <div className="col-md-4">
-            <div className="d-flex flex-column align-items-md-end mt-3 mt-md-0">
-              <div className="d-flex align-items-center">
-                <label htmlFor="sortSelect" className="me-2 text-nowrap">
-                  <i className="bi bi-sort-down me-1"></i>
-                  Sort by:
-                </label>
-                <select
-                  id="sortSelect"
-                  className={`form-select form-select-sm ${sortBy !== 'default' ? 'border-primary' : ''}`}
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  style={{ width: 'auto', minWidth: '180px' }}
-                >
-                  <option value="default">Default</option>
-                  <option value="name-asc">Name (A-Z)</option>
-                  <option value="name-desc">Name (Z-A)</option>
-                  <option value="price-asc">Price (Low to High)</option>
-                  <option value="price-desc">Price (High to Low)</option>
-                </select>
-              </div>
-              {sortBy !== 'default' && (
-                <small className="text-muted mt-1">
-                  <i className="bi bi-check-circle-fill text-success me-1"></i>
-                  Sorting applied across all pages
-                </small>
-              )}
-            </div>
+            <ProductSort 
+              sortBy={sortBy} 
+              onSortChange={handleSortChange}
+              className="mt-3 mt-md-0"
+            />
           </div>
         </div>
 
@@ -149,7 +155,7 @@ export default function ProductListPage() {
                     <li className={`page-item ${page === 1 ? 'disabled' : ''}`}>
                       <button 
                         className="page-link" 
-                        onClick={() => setPage(page - 1)}
+                        onClick={() => handlePageChange(page - 1)}
                         disabled={page === 1}
                       >
                         Previous
@@ -161,7 +167,7 @@ export default function ProductListPage() {
                         <li key={pageNum} className={`page-item ${page === pageNum ? 'active' : ''}`}>
                           <button 
                             className="page-link" 
-                            onClick={() => setPage(pageNum)}
+                            onClick={() => handlePageChange(pageNum)}
                           >
                             {pageNum}
                           </button>
@@ -171,7 +177,7 @@ export default function ProductListPage() {
                     <li className={`page-item ${page === totalPages ? 'disabled' : ''}`}>
                       <button 
                         className="page-link" 
-                        onClick={() => setPage(page + 1)}
+                        onClick={() => handlePageChange(page + 1)}
                         disabled={page === totalPages}
                       >
                         Next
