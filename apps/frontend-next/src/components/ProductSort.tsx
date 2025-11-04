@@ -34,7 +34,7 @@ export default function ProductSort({ sortBy, onSortChange, className = '' }: Pr
       {sortBy !== 'default' && (
         <small className="text-muted mt-1">
           <i className="bi bi-check-circle-fill text-success me-1"></i>
-          Sorting applied across all pages
+          Sorting active (resets when page reloads)
         </small>
       )}
     </div>

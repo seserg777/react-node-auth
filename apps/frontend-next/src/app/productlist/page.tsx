@@ -17,24 +17,20 @@ export default function ProductListPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
-  // Get page and sort from URL query params
+  // Get page from URL query params, sort from state only
   const pageFromUrl = parseInt(searchParams.get('page') || '1', 10);
-  const sortFromUrl = (searchParams.get('sort') || 'default') as SortOption;
   
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(pageFromUrl);
   const [totalPages, setTotalPages] = useState(1);
-  const [sortBy, setSortBy] = useState<SortOption>(sortFromUrl);
+  const [sortBy, setSortBy] = useState<SortOption>('default');
 
-  // Sync state with URL changes (browser back/forward)
+  // Sync page with URL changes (browser back/forward)
   useEffect(() => {
     const newPage = parseInt(searchParams.get('page') || '1', 10);
-    const newSort = (searchParams.get('sort') || 'default') as SortOption;
-    
     if (newPage !== page) setPage(newPage);
-    if (newSort !== sortBy) setSortBy(newSort);
   }, [searchParams]);
 
   // Fetch products from API
@@ -60,20 +56,17 @@ export default function ProductListPage() {
   // Use custom hook for sorting
   const sortedProducts = useProductSort(products, sortBy);
 
-  // Build URL for pagination links
-  const buildUrl = (pageNum: number, sort: SortOption = sortBy) => {
-    const params = new URLSearchParams();
-    if (pageNum > 1) params.set('page', pageNum.toString());
-    if (sort !== 'default') params.set('sort', sort);
-    
-    const queryString = params.toString();
-    return queryString ? `/productlist?${queryString}` : '/productlist';
+  // Build URL for pagination links (only page, no sort)
+  const buildUrl = (pageNum: number) => {
+    if (pageNum > 1) {
+      return `/productlist?page=${pageNum}`;
+    }
+    return '/productlist';
   };
 
-  // Handle sort change
+  // Handle sort change (state only, no URL update)
   const handleSortChange = (newSort: SortOption) => {
     setSortBy(newSort);
-    router.push(buildUrl(page, newSort), { scroll: false });
   };
 
   const handleViewDetails = (productId: number) => {

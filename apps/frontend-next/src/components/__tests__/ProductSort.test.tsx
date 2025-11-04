@@ -51,13 +51,13 @@ describe('ProductSort Component', () => {
   it('does not show success message when sort is default', () => {
     render(<ProductSort sortBy="default" onSortChange={mockOnSortChange} />);
 
-    expect(screen.queryByText(/sorting applied across all pages/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/sorting active/i)).not.toBeInTheDocument();
   });
 
   it('shows success message when sort is active', () => {
     render(<ProductSort sortBy="price-asc" onSortChange={mockOnSortChange} />);
 
-    expect(screen.getByText(/sorting applied across all pages/i)).toBeInTheDocument();
+    expect(screen.getByText(/sorting active/i)).toBeInTheDocument();
   });
 
   it('applies border-primary class when sort is active', () => {
