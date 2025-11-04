@@ -13,7 +13,8 @@ class ProductController {
         inStock,
         minPrice,
         maxPrice,
-        search
+        search,
+        sortBy = 'default'
       } = req.query;
 
       const offset = (page - 1) * limit;
@@ -42,11 +43,30 @@ class ProductController {
         ];
       }
 
+      // Build order clause based on sortBy parameter
+      let order;
+      switch (sortBy) {
+        case 'price-asc':
+          order = [['price', 'ASC']];
+          break;
+        case 'price-desc':
+          order = [['price', 'DESC']];
+          break;
+        case 'name-asc':
+          order = [['name', 'ASC']];
+          break;
+        case 'name-desc':
+          order = [['name', 'DESC']];
+          break;
+        default:
+          order = [['created_at', 'DESC']];
+      }
+
       const { count, rows } = await Product.findAndCountAll({
         where,
         limit: parseInt(limit),
         offset: parseInt(offset),
-        order: [['created_at', 'DESC']]
+        order
       });
 
       res.json({
