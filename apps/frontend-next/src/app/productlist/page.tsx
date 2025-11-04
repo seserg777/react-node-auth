@@ -9,7 +9,6 @@ import ProductCard from '@/components/ProductCard';
 import ProductSort, { type SortOption } from '@/components/ProductSort';
 import Pagination from '@/components/Pagination';
 import { ErrorAlert } from '@/components/Alert';
-import { useProductSort } from '@/hooks/useProductSort';
 import type { Product } from '@/types/product';
 import { productAPI } from '@/lib/api';
 
@@ -33,13 +32,17 @@ export default function ProductListPage() {
     if (newPage !== page) setPage(newPage);
   }, [searchParams]);
 
-  // Fetch products from API
+  // Fetch products from API (with sorting)
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
         setError(null);
-        const data = await productAPI.getProducts({ page, limit: 12 });
+        const data = await productAPI.getProducts({ 
+          page, 
+          limit: 12,
+          sortBy: sortBy !== 'default' ? sortBy : undefined
+        });
         setProducts(data.products);
         setTotalPages(data.pagination.totalPages);
       } catch (err: any) {
@@ -51,10 +54,7 @@ export default function ProductListPage() {
     };
 
     fetchProducts();
-  }, [page]);
-
-  // Use custom hook for sorting
-  const sortedProducts = useProductSort(products, sortBy);
+  }, [page, sortBy]); // Re-fetch when page OR sortBy changes
 
   // Build URL for pagination links (only page, no sort)
   const buildUrl = (pageNum: number) => {
@@ -116,7 +116,7 @@ export default function ProductListPage() {
         {!loading && (
           <>
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-              {sortedProducts.map((product) => (
+              {products.map((product) => (
                 <div key={product.id} className="col">
                   <ProductCard 
                     product={product}

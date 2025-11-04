@@ -84,6 +84,7 @@ export const productAPI = {
     minPrice?: number;
     maxPrice?: number;
     search?: string;
+    sortBy?: string;
   }) => {
     const response = await api.get('/products', { params });
     return response.data;
